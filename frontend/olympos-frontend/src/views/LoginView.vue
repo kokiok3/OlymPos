@@ -12,24 +12,22 @@ const changeFocusInput = ()=>{
 }
 
 // 로그인 버튼을 누르면 1유효성 상태 초기화 2유효성 체크 후 3 로그인 성공 / 로그인 실패
-// validateObj와 initValidateObj 는 클래스로
+// validateObj와 initValidateObj 는 클래스로 생성할 것.
 const schema = Joi.object({
     isErrorLoginId: Joi.string().required(),
     isErrorLoginPw: Joi.string().required()
 });
-interface ValidateObj {
-    isErrorLoginId: boolean,
-    isErrorLoginPw: boolean,
+
+interface ValidateDefaultObj {
     [key: string]: boolean
 }
-const validateObj: Ref<ValidateObj> = ref({
+const validateObj: Ref<ValidateDefaultObj> = ref({
     isErrorLoginId: false,
     isErrorLoginPw: false
 });
 const initValidateObj = ()=>{
     const validateObjKeysArr = Object.keys(validateObj.value);
-    validateObjKeysArr.forEach((element: string)=>{
-        console.log(element)
+    validateObjKeysArr.forEach((element)=>{
         validateObj.value[element] = false;
     });
 }
@@ -42,14 +40,12 @@ const login = ()=>{
     const validateResult = validate();
     if(validateResult.error){
         validateResult.error.details.forEach(element => {
-            validateObj.value[element.context.key] = true;
+            if(element?.context?.key){
+                validateObj.value[element.context.key] = true;
+            }
         });
     }
     else{
-        const successValidateKeys = Object.keys(validateResult.value);
-        successValidateKeys.forEach(element => {
-            validateObj.value[element] = false;
-        });
         // 성공 api 날리기
     }
 }
