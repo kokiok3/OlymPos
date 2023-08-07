@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Joi, { string } from 'joi';
-import { ref, Ref } from 'vue';
+import Joi from 'joi';
+import { ref, type Ref } from 'vue';
 
 const focusIdInput = ref(false);
 const focusPwInput = ref(false);
@@ -11,8 +11,6 @@ const changeFocusInput = ()=>{
     focusPwInput.value = loginPw.value.length > 0 ? true : false;
 }
 
-// 로그인 버튼을 누르면 1유효성 상태 초기화 2유효성 체크 후 3 로그인 성공 / 로그인 실패
-// validateObj와 initValidateObj 는 클래스로 생성할 것.
 const schema = Joi.object({
     isErrorLoginId: Joi.string().required(),
     isErrorLoginPw: Joi.string().required()
@@ -20,6 +18,8 @@ const schema = Joi.object({
 
 interface ValidateDefaultObj {
     [key: string]: boolean
+    isErrorLoginId: boolean,
+    isErrorLoginPw: boolean
 }
 const validateObj: Ref<ValidateDefaultObj> = ref({
     isErrorLoginId: false,
