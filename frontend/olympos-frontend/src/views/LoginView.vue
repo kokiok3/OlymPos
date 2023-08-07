@@ -88,7 +88,7 @@ const login = ()=>{
                 </div>
                 <button class="button-big" @click="login">로그인</button>
             </div>
-            <span class="create-id"><router-link to="sign-up">계정 만들기</router-link></span>
+            <span class="create-id"><router-link :to="{path: '/sign-up/user-name'}">계정 만들기</router-link></span>
         </div>
     </main>
 </template>
