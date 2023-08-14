@@ -1,55 +1,27 @@
 <script setup lang="ts">
 import Joi from 'joi';
-import { ref, type Ref } from 'vue';
+import { ref } from 'vue';
 
-
-const inputId = ref<HTMLElement>();
-const inputPw = ref<HTMLElement>();
-const clickInput = (clickedInput: string)=>{
-    if(clickedInput === 'inputId'){
-        inputId.value?.focus();
-        return;
-    }
-    if(clickedInput === 'inputPw'){
-        inputPw.value?.focus();
-        return;
-    }
-}
-
-const focusIdInput = ref(false);
-const focusPwInput = ref(false);
-const loginId = ref('');
-const loginPw = ref('');
-const changeFocusInput = ()=>{
-    focusIdInput.value = loginId.value.length > 0 ? true : false;
-    focusPwInput.value = loginPw.value.length > 0 ? true : false;
-}
+import InputLogin from '@/views/InputLogin.vue';
+import ValidateMessage from '@/views/ValidateMessage.vue';
+import ValidateLogin from '@/validations/ValidateLogin';
+import { newValidateObj, initValidateObj } from '@/validations/ValidateCommon';
 
 const schema = Joi.object({
     isErrorLoginId: Joi.string().required(),
     isErrorLoginPw: Joi.string().required()
 });
-
-interface ValidateDefaultObj {
-    [key: string]: boolean
-    isErrorLoginId: boolean,
-    isErrorLoginPw: boolean
-}
-const validateObj: Ref<ValidateDefaultObj> = ref({
+let validateObj = ref(newValidateObj({
     isErrorLoginId: false,
     isErrorLoginPw: false
-});
-const initValidateObj = ()=>{
-    const validateObjKeysArr = Object.keys(validateObj.value);
-    validateObjKeysArr.forEach((element)=>{
-        validateObj.value[element] = false;
-    });
-}
+}));
 const validate = ()=>{
     return schema.validate({isErrorLoginId: loginId.value, isErrorLoginPw: loginPw.value}, {abortEarly: false});
 }
+let loginId = ref<string | undefined>();
+let loginPw = ref<string | undefined>();
 const login = ()=>{
-    initValidateObj();
+    initValidateObj(validateObj.value);
 
     const validateResult = validate();
     if(validateResult.error){
@@ -75,25 +47,13 @@ const login = ()=>{
                 <h2 class="login-title">로그인</h2>
                 <h4 class="login-sub-title">아이디와 비밀번호를 입력하세요.</h4>
                 <form>
-                    <div class="form-row">
-                        <div class="login-id" @click="clickInput('inputId')">
-                            <input type="text" ref="inputId" @input="changeFocusInput" v-model="loginId">
-                            <span id="login-id" :class="{'focus-placeholder': focusIdInput}">아이디</span>
-                        </div>
-                        <div v-if="validateObj.isErrorLoginId" class="validate-error">
-                            <i class="fa-solid fa-circle-exclamation"></i>
-                            <span>잘못된 아이디입니다. 다시 시도해 주세요.</span>
-                        </div>
+                    <div class="form-row login-id">
+                        <InputLogin :type="'text'" :placeholder="'아이디'" v-model="loginId"/>
+                        <ValidateMessage v-if="validateObj?.isErrorLoginId" :error-msg="ValidateLogin.loginId"/>
                     </div>
-                    <div class="form-row">
-                        <div class="login-password" @click="clickInput('inputPw')">
-                            <input type="password" ref="inputPw" @change="changeFocusInput" v-model="loginPw">
-                            <span id="login-password" :class="{'focus-placeholder': focusPwInput}">비밀번호</span>
-                        </div>
-                        <div v-if="validateObj.isErrorLoginPw" class="validate-error">
-                            <i class="fa-solid fa-circle-exclamation"></i>
-                            <span>잘못된 비밀번호입니다. 다시 시도해 주세요.</span>
-                        </div>
+                    <div class="form-row login-pw">
+                        <InputLogin :type="'password'" :placeholder="'비밀번호'" v-model="loginPw"/>
+                        <ValidateMessage v-if="validateObj?.isErrorLoginPw" :error-msg="ValidateLogin.loginPw"/>
                     </div>
                 </form>
                 <div class="memorize-id">
@@ -146,41 +106,17 @@ main {
     width: -webkit-fill-available;
     gap: 23px;
 }
-.login-id, .login-password {
+.form-row {
     position: relative;
 }
-.login-id #login-id, .login-password #login-password {
-    position: absolute;
-    top: 14px;
-    left: 13px;
-    color: var(--main-black-soft);
-}
-.login-id input:focus + #login-id,
-.login-password input:focus + #login-password,
-#login-id.focus-placeholder,
-#login-password.focus-placeholder {
-    padding: 0 5px;
-    top: -10px;
-    transition: 200ms;
-    font-size: 12px;
-    background-color: var(--main-white);
-    color: var(--main);
-}
-#login-id.focus-placeholder,
-#login-password.focus-placeholder {
-    color: var(--main-black-soft);
-}
-.login-box form input, .button-big {
+.button-big {
     padding: 13px 15px;
     width: -webkit-fill-available;
     height: 52px;
     font-size: 17px;
     border-radius: 5px;
 }
-.login-box form input:focus {
-    outline-color: var(--main);
-}
-.login-box form input, .memorize-id input {
+.memorize-id input {
     border: 1px solid var(--main-gray-3);
 }
 .button-big {
