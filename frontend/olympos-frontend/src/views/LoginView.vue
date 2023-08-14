@@ -2,6 +2,20 @@
 import Joi from 'joi';
 import { ref, type Ref } from 'vue';
 
+
+const inputId = ref<HTMLElement>();
+const inputPw = ref<HTMLElement>();
+const clickInput = (clickedInput: string)=>{
+    if(clickedInput === 'inputId'){
+        inputId.value?.focus();
+        return;
+    }
+    if(clickedInput === 'inputPw'){
+        inputPw.value?.focus();
+        return;
+    }
+}
+
 const focusIdInput = ref(false);
 const focusPwInput = ref(false);
 const loginId = ref('');
@@ -62,8 +76,8 @@ const login = ()=>{
                 <h4 class="login-sub-title">아이디와 비밀번호를 입력하세요.</h4>
                 <form>
                     <div class="form-row">
-                        <div class="login-id">
-                            <input type="text" @input="changeFocusInput" v-model="loginId">
+                        <div class="login-id" @click="clickInput('inputId')">
+                            <input type="text" ref="inputId" @input="changeFocusInput" v-model="loginId">
                             <span id="login-id" :class="{'focus-placeholder': focusIdInput}">아이디</span>
                         </div>
                         <div v-if="validateObj.isErrorLoginId" class="validate-error">
@@ -72,8 +86,8 @@ const login = ()=>{
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="login-password">
-                            <input type="password" @change="changeFocusInput" v-model="loginPw">
+                        <div class="login-password" @click="clickInput('inputPw')">
+                            <input type="password" ref="inputPw" @change="changeFocusInput" v-model="loginPw">
                             <span id="login-password" :class="{'focus-placeholder': focusPwInput}">비밀번호</span>
                         </div>
                         <div v-if="validateObj.isErrorLoginPw" class="validate-error">
