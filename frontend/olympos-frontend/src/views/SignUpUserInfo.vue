@@ -4,6 +4,7 @@ import Joi from 'joi';
 import { ref } from 'vue';
 
 import InputLogin from '@/views/InputLogin.vue';
+import InputPhone from '@/views/InputPhone.vue';
 import ValidateMessage from '@/views/ValidateMessage.vue';
 import ValidateSignUp from '@/validations/ValidateSignUp';
 import { newValidateObj, initValidateObj } from '@/validations/ValidateCommon';
@@ -11,19 +12,21 @@ import { newValidateObj, initValidateObj } from '@/validations/ValidateCommon';
 import LogoText from '@/components/logo/LogoText.vue';
 
 const schema = Joi.object({
-    isErrorFirstName: Joi.string().empty(''),
-    isErrorLastName: Joi.string().required()
+    isErrorPhone: Joi.string().empty(''),
+    isErrorEmail: Joi.string().required()
 });
 let validateObj = ref(newValidateObj({
-    isErrorFirstName: false,
-    isErrorLastName: false
+    isErrorPhone: false,
+    isErrorEmail: false
 }));
 const validate = ()=>{
-    return schema.validate({isErrorFirstName: signUp.value.firstName, isErrorLastName: signUp.value.lastName}, {abortEarly: false});
+    console.log(signUp.value);
+    return;
+    return schema.validate({isErrorPhone: signUp.value.phone, isErrorEmail: signUp.value.email}, {abortEarly: false});
 }
 const signUp = ref({
-    firstName: '',
-    lastName: ''
+    phone: {},
+    email: ''
 });
 const nextStep = ()=>{
     initValidateObj(validateObj.value);
@@ -41,6 +44,10 @@ const nextStep = ()=>{
         // 성공 api 날리기
     }
 }
+
+const changePhone = (changedPhone)=>{
+    signUp.value.phone = changedPhone;
+}
 </script>
 
 <template>
@@ -50,15 +57,15 @@ const nextStep = ()=>{
 
             <div class="login-box">
                 <h2 class="login-title">계정 만들기</h2>
-                <h4 class="login-sub-title">이름을 입력하세요.</h4>
+                <h4 class="login-sub-title">연락처와 이메일을 입력하세요.</h4>
                 <form>
                     <div class="form-row">
-                        <InputLogin :type="'text'" :placeholder="'성(선택사항)'" v-model="signUp.firstName"/>
-                        <ValidateMessage v-if="validateObj?.isErrorFirstName" :error-msg="ValidateSignUp.firstName"/>
+                        <InputPhone @change-phone="changePhone"/>
+                        <ValidateMessage v-if="validateObj?.isErrorPhone" :error-msg="ValidateSignUp.phone"/>
                     </div>
                     <div class="form-row">
-                        <InputLogin :type="'text'" :placeholder="'이름'" v-model="signUp.lastName"/>
-                        <ValidateMessage v-if="validateObj?.isErrorLastName" :error-msg="ValidateSignUp.lastName"/>
+                        <InputLogin :type="'email'" :placeholder="'이메일'" v-model="signUp.email"/>
+                        <ValidateMessage v-if="validateObj?.isErrorEmail" :error-msg="ValidateSignUp.email"/>
                     </div>
                 </form>
                 <button class="button-big" @click="nextStep">다음</button>
