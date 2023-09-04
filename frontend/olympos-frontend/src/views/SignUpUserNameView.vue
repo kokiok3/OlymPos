@@ -8,6 +8,8 @@ import ValidateMessage from '@/views/ValidateMessage.vue';
 import ValidateSignUp from '@/validations/ValidateSignUp';
 import { newValidateObj, initValidateObj } from '@/validations/ValidateCommon';
 
+import LogoText from '@/components/logo/LogoText.vue';
+
 const schema = Joi.object({
     isErrorFirstName: Joi.string().empty(''),
     isErrorLastName: Joi.string().required()
@@ -44,9 +46,8 @@ const nextStep = ()=>{
 <template>
     <main>
         <div class="login-wrapper">
-            <div class="logo">
-                로고 이미지
-            </div>
+            <LogoText />
+
             <div class="login-box">
                 <h2 class="login-title">계정 만들기</h2>
                 <h4 class="login-sub-title">이름을 입력하세요.</h4>
