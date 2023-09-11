@@ -3,7 +3,10 @@ const ValidateSignUp = {
     firstName: '문자만 입력해주세요.',
     lastName: required,
     phone: required,
-    email: required
+    email: required,
+    id: required,
+    password: required,
+    passwordCheck: required,
 }
 
 export default ValidateSignUp;
