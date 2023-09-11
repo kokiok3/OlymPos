@@ -7,6 +7,8 @@ import ValidateMessage from '@/views/ValidateMessage.vue';
 import ValidateLogin from '@/validations/ValidateLogin';
 import { newValidateObj, initValidateObj } from '@/validations/ValidateCommon';
 
+import LogoText from '@/components/logo/LogoText.vue';
+
 const schema = Joi.object({
     isErrorLoginId: Joi.string().required(),
     isErrorLoginPw: Joi.string().required()
@@ -40,9 +42,8 @@ const login = ()=>{
 <template>
     <main>
         <div class="login-wrapper">
-            <div class="logo">
-                로고 이미지
-            </div>
+            <LogoText />
+            
             <div class="login-box">
                 <h2 class="login-title">로그인</h2>
                 <h4 class="login-sub-title">아이디와 비밀번호를 입력하세요.</h4>
