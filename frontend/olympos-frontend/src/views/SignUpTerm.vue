@@ -4,7 +4,6 @@ import Joi from 'joi';
 import { ref } from 'vue';
 
 import InputLogin from '@/views/InputLogin.vue';
-import InputPhone from '@/views/InputPhone.vue';
 import ValidateMessage from '@/views/ValidateMessage.vue';
 import ValidateSignUp from '@/validations/ValidateSignUp';
 import { newValidateObj, initValidateObj } from '@/validations/ValidateCommon';
@@ -12,24 +11,21 @@ import { newValidateObj, initValidateObj } from '@/validations/ValidateCommon';
 import LogoText from '@/components/logo/LogoText.vue';
 
 const schema = Joi.object({
-    isErrorPhone: Joi.string(),
-    isErrorEmail: Joi.string().email({tlds: false}).required()
+    isErrorPassword: Joi.string().required(),
+    isErrorPasswordCheck: Joi.string().required()
 });
 let validateObj = ref(newValidateObj({
-    isErrorPhone: false,
-    isErrorEmail: false
+    isErrorPassword: false,
+    isErrorPasswordCheck: false
 }));
 const validate = ()=>{
-    return schema.validate({isErrorPhone: joinPhoneNumber(), isErrorEmail: signUp.value.email}, {abortEarly: false});
-}
-const joinPhoneNumber = ()=>{
-    return Object.values(signUp.value.phone).join('');
+    return schema.validate({isErrorPassword: signUp.value.password, isErrorPasswordCheck: signUp.value.passwordCheck}, {abortEarly: false});
 }
 const signUp = ref({
-    phone: {},
-    email: ''
+    password: '',
+    passwordCheck: ''
 });
-const nextStep = ()=>{
+const createAccount = ()=>{
     initValidateObj(validateObj.value);
 
     const validateResult = validate();
@@ -41,13 +37,9 @@ const nextStep = ()=>{
         });
     }
     else{
-        router.push({path: '/sign-up/user-id'});
-        // 성공 api 날리기
+        // 계정 생성 API
+        router.push({path: '/sign-up/complete'});
     }
-}
-
-const changePhone = (changedPhone)=>{
-    signUp.value.phone = changedPhone;
 }
 </script>
 
@@ -58,18 +50,24 @@ const changePhone = (changedPhone)=>{
 
             <div class="login-box">
                 <h2 class="login-title">계정 만들기</h2>
-                <h4 class="login-sub-title">연락처와 이메일을 입력하세요.</h4>
+                <h4 class="login-sub-title">약관에 동의해주세요.</h4>
                 <form>
                     <div class="form-row">
-                        <InputPhone @change-phone="changePhone"/>
-                        <ValidateMessage v-if="validateObj?.isErrorPhone" :error-msg="ValidateSignUp.phone"/>
+                        <input type="checkbox" id="term1">
+                        <label for="term1">
+                            OlymPos(올림포스) 개인정보처리 방침
+                        </label>
+                        <ValidateMessage v-if="validateObj?.isErrorPassword" :error-msg="ValidateSignUp.password"/>
                     </div>
                     <div class="form-row">
-                        <InputLogin :type="'email'" :placeholder="'이메일'" v-model="signUp.email"/>
-                        <ValidateMessage v-if="validateObj?.isErrorEmail" :error-msg="ValidateSignUp.email"/>
+                        <input type="checkbox" id="term2">
+                        <label for="term2">
+                            OlymPos(올림포스) 약관
+                        </label>
+                        <ValidateMessage v-if="validateObj?.isErrorPasswordCheck" :error-msg="ValidateSignUp.passwordCheck"/>
                     </div>
                 </form>
-                <button class="button-big" @click="nextStep">다음</button>
+                <button class="button-big" @click="createAccount">계정 만들기</button>
             </div>
         </div>
     </main>
