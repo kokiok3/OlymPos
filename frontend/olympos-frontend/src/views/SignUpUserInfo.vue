@@ -65,7 +65,7 @@ const changePhone = (changedPhone)=>{
                         <ValidateMessage v-if="validateObj?.isErrorPhone" :error-msg="ValidateSignUp.phone"/>
                     </div>
                     <div class="form-row">
-                        <InputLogin :type="'email'" :placeholder="'이메일'" v-model="signUp.email"/>
+                        <InputLogin :type="'email'" :placeholder="'이메일'" v-model="signUp.email" @keyup.enter="nextStep"/>
                         <ValidateMessage v-if="validateObj?.isErrorEmail" :error-msg="ValidateSignUp.email"/>
                     </div>
                 </form>

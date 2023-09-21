@@ -50,7 +50,7 @@ const nextStep = ()=>{
                 <h4 class="login-sub-title">새 아이디를 만드세요.</h4>
                 <form>
                     <div class="form-row">
-                        <InputLogin :type="'text'" :placeholder="'아이디'" v-model="signUp.id"/>
+                        <InputLogin :type="'text'" :placeholder="'아이디'" v-model="signUp.id" @keyup.enter="nextStep"/>
                         <ValidateMessage v-if="validateObj?.isErrorId" :error-msg="ValidateSignUp.id"/>
                     </div>
                 </form>

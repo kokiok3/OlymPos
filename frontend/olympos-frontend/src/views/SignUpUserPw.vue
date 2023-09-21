@@ -57,7 +57,7 @@ const nextStep = ()=>{
                         <ValidateMessage v-if="validateObj?.isErrorPassword" :error-msg="ValidateSignUp.password"/>
                     </div>
                     <div class="form-row">
-                        <InputLogin :type="'text'" :placeholder="'확인'" v-model="signUp.passwordCheck"/>
+                        <InputLogin :type="'text'" :placeholder="'확인'" v-model="signUp.passwordCheck" @keyup.enter="nextStep"/>
                         <ValidateMessage v-if="validateObj?.isErrorPasswordCheck" :error-msg="ValidateSignUp.passwordCheck"/>
                     </div>
                 </form>

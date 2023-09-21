@@ -57,7 +57,7 @@ const nextStep = ()=>{
                         <ValidateMessage v-if="validateObj?.isErrorFirstName" :error-msg="ValidateSignUp.firstName"/>
                     </div>
                     <div class="form-row">
-                        <InputLogin :type="'text'" :placeholder="'이름'" v-model="signUp.lastName"/>
+                        <InputLogin :type="'text'" :placeholder="'이름'" v-model="signUp.lastName" @keyup.enter="nextStep"/>
                         <ValidateMessage v-if="validateObj?.isErrorLastName" :error-msg="ValidateSignUp.lastName"/>
                     </div>
                 </form>
