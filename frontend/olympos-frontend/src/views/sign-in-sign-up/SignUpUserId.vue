@@ -3,13 +3,13 @@ import router from '@/router';
 import Joi from 'joi';
 import { ref } from 'vue';
 
-import InputLogin from '@/views/InputLogin.vue';
-import ValidateMessage from '@/views/ValidateMessage.vue';
+import InputLogin from '@/components/inputs/InputLogin.vue';
+import ValidateMessage from '@/components/validates/ValidateMessage.vue';
 import ValidateSignUp from '@/validations/ValidateSignUp';
 import { newValidateObj, initValidateObj } from '@/validations/ValidateCommon';
 
 import LogoText from '@/components/logo/LogoText.vue';
-import SignUpButton from '@/views/SignUpButton.vue';
+import ButtonBig from '@/components/buttons/ButtonBig.vue';
 
 const schema = Joi.object({
     isErrorId: Joi.string().required()
@@ -55,7 +55,7 @@ const nextStep = ()=>{
                         <ValidateMessage v-if="validateObj?.isErrorId" :error-msg="ValidateSignUp.id"/>
                     </div>
                 </form>
-                <SignUpButton @click="nextStep">다음</SignUpButton>
+                <ButtonBig @click="nextStep">다음</ButtonBig>
             </div>
         </div>
     </main>

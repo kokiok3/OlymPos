@@ -3,28 +3,28 @@ import router from '@/router';
 import Joi from 'joi';
 import { ref } from 'vue';
 
-import InputLogin from '@/views/InputLogin.vue';
-import ValidateMessage from '@/views/ValidateMessage.vue';
+import InputLogin from '@/components/inputs/InputLogin.vue';
+import ValidateMessage from '@/components/validates/ValidateMessage.vue';
 import ValidateSignUp from '@/validations/ValidateSignUp';
 import { newValidateObj, initValidateObj } from '@/validations/ValidateCommon';
 
 import LogoText from '@/components/logo/LogoText.vue';
-import SignUpButton from '@/views/SignUpButton.vue';
+import ButtonBig from '@/components/buttons/ButtonBig.vue';
 
 const schema = Joi.object({
-    isErrorFirstName: Joi.string().empty(''),
-    isErrorLastName: Joi.string().required()
+    isErrorPassword: Joi.string().required(),
+    isErrorPasswordCheck: Joi.string().required()
 });
 let validateObj = ref(newValidateObj({
-    isErrorFirstName: false,
-    isErrorLastName: false
+    isErrorPassword: false,
+    isErrorPasswordCheck: false
 }));
 const validate = ()=>{
-    return schema.validate({isErrorFirstName: signUp.value.firstName, isErrorLastName: signUp.value.lastName}, {abortEarly: false});
+    return schema.validate({isErrorPassword: signUp.value.password, isErrorPasswordCheck: signUp.value.passwordCheck}, {abortEarly: false});
 }
 const signUp = ref({
-    firstName: '',
-    lastName: ''
+    password: '',
+    passwordCheck: ''
 });
 const nextStep = ()=>{
     initValidateObj(validateObj.value);
@@ -38,7 +38,7 @@ const nextStep = ()=>{
         });
     }
     else{
-        router.push({path: '/sign-up/user-info'});
+        router.push({path: '/sign-up/term'});
         // 성공 api 날리기
     }
 }
@@ -51,18 +51,18 @@ const nextStep = ()=>{
 
             <div class="login-box">
                 <h2 class="login-title">계정 만들기</h2>
-                <h4 class="login-sub-title">이름을 입력하세요.</h4>
+                <h4 class="login-sub-title">문자, 숫자, 기호를 조합하여 안전한 비밀번호를 만드세요.</h4>
                 <form>
                     <div class="form-row">
-                        <InputLogin :type="'text'" :placeholder="'성(선택사항)'" v-model="signUp.firstName"/>
-                        <ValidateMessage v-if="validateObj?.isErrorFirstName" :error-msg="ValidateSignUp.firstName"/>
+                        <InputLogin :type="'text'" :placeholder="'비밀번호'" v-model="signUp.password"/>
+                        <ValidateMessage v-if="validateObj?.isErrorPassword" :error-msg="ValidateSignUp.password"/>
                     </div>
                     <div class="form-row">
-                        <InputLogin :type="'text'" :placeholder="'이름'" v-model="signUp.lastName" @keyup.enter="nextStep"/>
-                        <ValidateMessage v-if="validateObj?.isErrorLastName" :error-msg="ValidateSignUp.lastName"/>
+                        <InputLogin :type="'text'" :placeholder="'확인'" v-model="signUp.passwordCheck" @keyup.enter="nextStep"/>
+                        <ValidateMessage v-if="validateObj?.isErrorPasswordCheck" :error-msg="ValidateSignUp.passwordCheck"/>
                     </div>
                 </form>
-                <SignUpButton @click="nextStep">다음</SignUpButton>
+                <ButtonBig @click="nextStep">다음</ButtonBig>
             </div>
         </div>
     </main>

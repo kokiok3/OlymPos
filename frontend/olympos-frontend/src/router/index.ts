@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Login from '@/views/LoginView.vue'
-import SignUpUserNameView from '@/views/SignUpUserNameView.vue'
-import SignUpUserInfo from '@/views/SignUpUserInfo.vue'
-import SignUpUserId from '@/views/SignUpUserId.vue'
-import SignUpUserPw from '@/views/SignUpUserPw.vue'
-import SignUpTerm from '@/views/SignUpTerm.vue'
-import SignUpComplete from '@/views/SignUpComplete.vue'
+import Login from '@/views/sign-in-sign-up/LoginView.vue'
+import SignUpUserName from '@/views/sign-in-sign-up/SignUpUserName.vue'
+import SignUpUserInfo from '@/views/sign-in-sign-up/SignUpUserInfo.vue'
+import SignUpUserId from '@/views/sign-in-sign-up/SignUpUserId.vue'
+import SignUpUserPw from '@/views/sign-in-sign-up/SignUpUserPw.vue'
+import SignUpTerm from '@/views/sign-in-sign-up/SignUpTerm.vue'
+import SignUpComplete from '@/views/sign-in-sign-up/SignUpComplete.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,7 +18,7 @@ const router = createRouter({
     {
       path: '/sign-up/user-name',
       name: 'sign-up/user-name',
-      component: SignUpUserNameView
+      component: SignUpUserName
     },
     {
       path: '/sign-up/user-info',
