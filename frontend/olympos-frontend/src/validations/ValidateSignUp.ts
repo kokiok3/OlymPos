@@ -7,6 +7,8 @@ const ValidateSignUp = {
     id: required,
     password: required,
     passwordCheck: required,
+    term1: required,
+    term2: required,
 }
 
 export default ValidateSignUp;
