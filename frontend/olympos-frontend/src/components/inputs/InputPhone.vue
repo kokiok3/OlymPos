@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import InputLogin from '@/views/InputLogin.vue';
+import InputLogin from '@/components/inputs/InputLogin.vue';
 
 
 const signUp = ref({

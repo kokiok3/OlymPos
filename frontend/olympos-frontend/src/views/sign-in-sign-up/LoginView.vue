@@ -2,8 +2,8 @@
 import Joi from 'joi';
 import { ref } from 'vue';
 
-import InputLogin from '@/views/InputLogin.vue';
-import ValidateMessage from '@/views/ValidateMessage.vue';
+import InputLogin from '@/components/inputs/InputLogin.vue';
+import ValidateMessage from '@/components/validates/ValidateMessage.vue';
 import ValidateLogin from '@/validations/ValidateLogin';
 import { newValidateObj, initValidateObj } from '@/validations/ValidateCommon';
 
