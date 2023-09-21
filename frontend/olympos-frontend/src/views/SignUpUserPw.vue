@@ -9,6 +9,7 @@ import ValidateSignUp from '@/validations/ValidateSignUp';
 import { newValidateObj, initValidateObj } from '@/validations/ValidateCommon';
 
 import LogoText from '@/components/logo/LogoText.vue';
+import SignUpButton from '@/views/SignUpButton.vue';
 
 const schema = Joi.object({
     isErrorPassword: Joi.string().required(),
@@ -61,7 +62,7 @@ const nextStep = ()=>{
                         <ValidateMessage v-if="validateObj?.isErrorPasswordCheck" :error-msg="ValidateSignUp.passwordCheck"/>
                     </div>
                 </form>
-                <button class="button-big" @click="nextStep">다음</button>
+                <SignUpButton @click="nextStep">다음</SignUpButton>
             </div>
         </div>
     </main>

@@ -8,6 +8,7 @@ import ValidateSignUp from '@/validations/ValidateSignUp';
 import { newValidateObj, initValidateObj } from '@/validations/ValidateCommon';
 
 import LogoText from '@/components/logo/LogoText.vue';
+import SignUpButton from '@/views/SignUpButton.vue';
 
 const schema = Joi.object({
     isErrorTerm1: Joi.boolean().required(),
@@ -66,7 +67,7 @@ const createAccount = ()=>{
                         <ValidateMessage v-if="validateObj?.isErrorTerm2" :error-msg="ValidateSignUp.term2"/>
                     </div>
                 </form>
-                <button class="button-big" @click="createAccount">계정 만들기</button>
+                <SignUpButton @click="createAccount">계정 만들기</SignUpButton>
             </div>
         </div>
     </main>

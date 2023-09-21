@@ -10,6 +10,7 @@ import ValidateSignUp from '@/validations/ValidateSignUp';
 import { newValidateObj, initValidateObj } from '@/validations/ValidateCommon';
 
 import LogoText from '@/components/logo/LogoText.vue';
+import SignUpButton from '@/views/SignUpButton.vue';
 
 const schema = Joi.object({
     isErrorPhone: Joi.string(),
@@ -69,7 +70,7 @@ const changePhone = (changedPhone)=>{
                         <ValidateMessage v-if="validateObj?.isErrorEmail" :error-msg="ValidateSignUp.email"/>
                     </div>
                 </form>
-                <button class="button-big" @click="nextStep">다음</button>
+                <SignUpButton @click="nextStep">다음</SignUpButton>
             </div>
         </div>
     </main>
