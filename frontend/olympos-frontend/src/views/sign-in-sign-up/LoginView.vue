@@ -8,6 +8,7 @@ import ValidateLogin from '@/validations/ValidateLogin';
 import { newValidateObj, initValidateObj } from '@/validations/ValidateCommon';
 
 import LogoText from '@/components/logo/LogoText.vue';
+import ButtonBig from '@/components/buttons/ButtonBig.vue';
 
 const schema = Joi.object({
     isErrorLoginId: Joi.string().required(),
@@ -61,7 +62,7 @@ const login = ()=>{
                     <input type="checkbox" id="memorize-id">
                     <label for="memorize-id">아이디 저장</label>
                 </div>
-                <button class="button-big" @click="login">로그인</button>
+                <ButtonBig @click="login">로그인</ButtonBig>
             </div>
             <span class="create-id"><router-link :to="{path: '/sign-up/user-name'}">계정 만들기</router-link></span>
         </div>
