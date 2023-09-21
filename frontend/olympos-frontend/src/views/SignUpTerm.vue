@@ -3,7 +3,6 @@ import router from '@/router';
 import Joi from 'joi';
 import { ref } from 'vue';
 
-import InputLogin from '@/views/InputLogin.vue';
 import ValidateMessage from '@/views/ValidateMessage.vue';
 import ValidateSignUp from '@/validations/ValidateSignUp';
 import { newValidateObj, initValidateObj } from '@/validations/ValidateCommon';
@@ -11,19 +10,19 @@ import { newValidateObj, initValidateObj } from '@/validations/ValidateCommon';
 import LogoText from '@/components/logo/LogoText.vue';
 
 const schema = Joi.object({
-    isErrorPassword: Joi.string().required(),
-    isErrorPasswordCheck: Joi.string().required()
+    isErrorTerm1: Joi.boolean().required(),
+    isErrorTerm2: Joi.boolean().required()
 });
 let validateObj = ref(newValidateObj({
-    isErrorPassword: false,
-    isErrorPasswordCheck: false
+    isErrorTerm1: false,
+    isErrorTerm2: false
 }));
 const validate = ()=>{
-    return schema.validate({isErrorPassword: signUp.value.password, isErrorPasswordCheck: signUp.value.passwordCheck}, {abortEarly: false});
+    return schema.validate({isErrorTerm1: signUp.value.term1, isErrorTerm2: signUp.value.term2}, {abortEarly: false});
 }
 const signUp = ref({
-    password: '',
-    passwordCheck: ''
+    term1: '',
+    term2: ''
 });
 const createAccount = ()=>{
     initValidateObj(validateObj.value);
@@ -53,18 +52,18 @@ const createAccount = ()=>{
                 <h4 class="login-sub-title">약관에 동의해주세요.</h4>
                 <form>
                     <div class="form-row">
-                        <input type="checkbox" id="term1">
+                        <input type="checkbox" id="term1" v-model="signUp.term1">
                         <label for="term1">
                             OlymPos(올림포스) 개인정보처리 방침
                         </label>
-                        <ValidateMessage v-if="validateObj?.isErrorPassword" :error-msg="ValidateSignUp.password"/>
+                        <ValidateMessage v-if="validateObj?.isErrorTerm1" :error-msg="ValidateSignUp.term1"/>
                     </div>
                     <div class="form-row">
-                        <input type="checkbox" id="term2">
+                        <input type="checkbox" id="term2" v-model="signUp.term2">
                         <label for="term2">
                             OlymPos(올림포스) 약관
                         </label>
-                        <ValidateMessage v-if="validateObj?.isErrorPasswordCheck" :error-msg="ValidateSignUp.passwordCheck"/>
+                        <ValidateMessage v-if="validateObj?.isErrorTerm2" :error-msg="ValidateSignUp.term2"/>
                     </div>
                 </form>
                 <button class="button-big" @click="createAccount">계정 만들기</button>
