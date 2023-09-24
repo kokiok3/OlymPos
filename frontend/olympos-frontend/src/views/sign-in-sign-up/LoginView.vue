@@ -19,10 +19,13 @@ let validateObj = ref(newValidateObj({
     isErrorLoginPw: false
 }));
 const validate = ()=>{
-    return schema.validate({isErrorLoginId: loginId.value, isErrorLoginPw: loginPw.value}, {abortEarly: false});
+    return schema.validate({isErrorLoginId: loginValue.value.userId, isErrorLoginPw: loginValue.value.userPw}, {abortEarly: false});
 }
-let loginId = ref<string | undefined>();
-let loginPw = ref<string | undefined>();
+
+const loginValue = ref({
+    userId: '',
+    userPw: ''
+});
 const login = ()=>{
     initValidateObj(validateObj.value);
 
@@ -50,12 +53,12 @@ const login = ()=>{
                 <h4 class="login-sub-title">아이디와 비밀번호를 입력하세요.</h4>
                 <form>
                     <div class="form-row login-id">
-                        <InputLogin :type="'text'" :placeholder="'아이디'" v-model="loginId"/>
-                        <ValidateMessage v-if="validateObj?.isErrorLoginId" :error-msg="ValidateLogin.loginId"/>
+                        <InputLogin :type="'text'" :placeholder="'아이디'" v-model="loginValue.userId"/>
+                        <ValidateMessage v-if="validateObj?.isErrorLoginId" :error-msg="ValidateLogin.userId"/>
                     </div>
                     <div class="form-row login-pw">
-                        <InputLogin :type="'password'" :placeholder="'비밀번호'" v-model="loginPw"/>
-                        <ValidateMessage v-if="validateObj?.isErrorLoginPw" :error-msg="ValidateLogin.loginPw"/>
+                        <InputLogin :type="'password'" :placeholder="'비밀번호'" v-model="loginValue.userPw" @keyup.enter="login"/>
+                        <ValidateMessage v-if="validateObj?.isErrorLoginPw" :error-msg="ValidateLogin.userPw"/>
                     </div>
                 </form>
                 <div class="memorize-id">
