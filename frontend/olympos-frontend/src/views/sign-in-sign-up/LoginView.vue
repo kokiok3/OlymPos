@@ -10,6 +10,8 @@ import { newValidateObj, initValidateObj } from '@/validations/ValidateCommon';
 import LogoText from '@/components/logo/LogoText.vue';
 import ButtonBig from '@/components/buttons/ButtonBig.vue';
 
+import LoginApi from '@/apis/LoginApi'
+
 const schema = Joi.object({
     isErrorLoginId: Joi.string().required(),
     isErrorLoginPw: Joi.string().required()
@@ -38,7 +40,12 @@ const login = ()=>{
         });
     }
     else{
-        // 성공 api 날리기
+        LoginApi.doLogin(loginValue.value)
+        .then(res=>{
+            const token = res.data.access_token;
+            sessionStorage.setItem('access_token', token);
+            // todo: 화면 이동
+        })
     }
 }
 </script>
