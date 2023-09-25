@@ -11,6 +11,9 @@ import { newValidateObj, initValidateObj } from '@/validations/ValidateCommon';
 import LogoText from '@/components/logo/LogoText.vue';
 import ButtonBig from '@/components/buttons/ButtonBig.vue';
 
+import { useSignUpStore } from '@/stores/SignUpStore';
+const signUpStore = useSignUpStore();
+
 const schema = Joi.object({
     isErrorId: Joi.string().required()
 });
@@ -35,8 +38,12 @@ const nextStep = ()=>{
         });
     }
     else{
+        const params = {
+            user_id: signUp.value.id
+        }
+        signUpStore.setSignUpInfo(params);
+        
         router.push({path: '/sign-up/user-pw'});
-        // 성공 api 날리기
     }
 }
 </script>

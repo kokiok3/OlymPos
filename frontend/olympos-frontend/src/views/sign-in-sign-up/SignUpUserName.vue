@@ -11,6 +11,9 @@ import { newValidateObj, initValidateObj } from '@/validations/ValidateCommon';
 import LogoText from '@/components/logo/LogoText.vue';
 import ButtonBig from '@/components/buttons/ButtonBig.vue';
 
+import { useSignUpStore } from '@/stores/SignUpStore';
+const signUpStore = useSignUpStore();
+
 const schema = Joi.object({
     isErrorFirstName: Joi.string().empty(''),
     isErrorLastName: Joi.string().required()
@@ -20,7 +23,11 @@ let validateObj = ref(newValidateObj({
     isErrorLastName: false
 }));
 const validate = ()=>{
-    return schema.validate({isErrorFirstName: signUp.value.firstName, isErrorLastName: signUp.value.lastName}, {abortEarly: false});
+    return schema.validate({
+        isErrorFirstName: signUp.value.firstName,
+        isErrorLastName: signUp.value.lastName,
+        sumName: signUp.value.firstName+signUp.value.lastName
+    }, {abortEarly: false});
 }
 const signUp = ref({
     firstName: '',
@@ -38,8 +45,12 @@ const nextStep = ()=>{
         });
     }
     else{
+        const params = {
+            name: `${signUp.value.firstName}-${signUp.value.lastName}`
+        }
+        signUpStore.setSignUpInfo(params);
+
         router.push({path: '/sign-up/user-info'});
-        // 성공 api 날리기
     }
 }
 </script>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import router from '@/router';
 import Joi from 'joi';
 import { ref } from 'vue';
 
@@ -9,6 +8,11 @@ import { newValidateObj, initValidateObj } from '@/validations/ValidateCommon';
 
 import LogoText from '@/components/logo/LogoText.vue';
 import ButtonBig from '@/components/buttons/ButtonBig.vue';
+
+import { useSignUpStore } from '@/stores/SignUpStore';
+const signUpStore = useSignUpStore();
+
+import SignUpApi from '@/apis/SignUpApi';
 
 const schema = Joi.object({
     isErrorTerm1: Joi.boolean().required(),
@@ -37,8 +41,7 @@ const createAccount = ()=>{
         });
     }
     else{
-        // 계정 생성 API
-        router.push({path: '/sign-up/complete'});
+        SignUpApi.createAccount(signUpStore.signUpInfo);
     }
 }
 </script>
