@@ -16,7 +16,8 @@ const signUpStore = useSignUpStore();
 
 const schema = Joi.object({
     isErrorFirstName: Joi.string().empty(''),
-    isErrorLastName: Joi.string().required()
+    isErrorLastName: Joi.string().required(),
+    sumName: Joi.string().min(2).max(128)
 });
 let validateObj = ref(newValidateObj({
     isErrorFirstName: false,

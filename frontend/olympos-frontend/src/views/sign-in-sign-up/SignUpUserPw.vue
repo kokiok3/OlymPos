@@ -15,8 +15,8 @@ import { useSignUpStore } from '@/stores/SignUpStore';
 const signUpStore = useSignUpStore();
 
 const schema = Joi.object({
-    isErrorPassword: Joi.string().required(),
-    isErrorPasswordCheck: Joi.string().required()
+    isErrorPassword: Joi.string().min(8).max(32).required(),
+    isErrorPasswordCheck: Joi.string().min(8).max(32).required()
 });
 let validateObj = ref(newValidateObj({
     isErrorPassword: false,

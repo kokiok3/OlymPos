@@ -16,7 +16,7 @@ import { useSignUpStore } from '@/stores/SignUpStore';
 const signUpStore = useSignUpStore();
 
 const schema = Joi.object({
-    isErrorPhone: Joi.string(),
+    isErrorPhone: Joi.string().min(11).max(16).required(),
     isErrorEmail: Joi.string().email({tlds: false}).required()
 });
 let validateObj = ref(newValidateObj({
