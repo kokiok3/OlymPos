@@ -52,7 +52,7 @@ const nextStep = ()=>{
             <div class="login-box">
                 <h2 class="login-title">계정 만들기</h2>
                 <h4 class="login-sub-title">이름을 입력하세요.</h4>
-                <form>
+                <form @submit.prevent>
                     <div class="form-row">
                         <InputLogin :type="'text'" :placeholder="'성(선택사항)'" v-model="signUp.firstName"/>
                         <ValidateMessage v-if="validateObj?.isErrorFirstName" :error-msg="ValidateSignUp.firstName"/>

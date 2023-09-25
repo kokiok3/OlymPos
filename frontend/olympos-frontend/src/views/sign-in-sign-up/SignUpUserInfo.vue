@@ -60,7 +60,7 @@ const changePhone = (changedPhone)=>{
             <div class="login-box">
                 <h2 class="login-title">계정 만들기</h2>
                 <h4 class="login-sub-title">연락처와 이메일을 입력하세요.</h4>
-                <form>
+                <form @submit.prevent>
                     <div class="form-row">
                         <InputPhone @change-phone="changePhone"/>
                         <ValidateMessage v-if="validateObj?.isErrorPhone" :error-msg="ValidateSignUp.phone"/>

@@ -51,7 +51,7 @@ const createAccount = ()=>{
             <div class="login-box">
                 <h2 class="login-title">계정 만들기</h2>
                 <h4 class="login-sub-title">약관에 동의해주세요.</h4>
-                <form>
+                <form @submit.prevent>
                     <div class="form-row">
                         <input type="checkbox" id="term1" v-model="signUp.term1">
                         <label for="term1">
