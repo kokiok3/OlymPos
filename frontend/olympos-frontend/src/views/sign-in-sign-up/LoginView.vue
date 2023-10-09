@@ -40,12 +40,7 @@ const login = ()=>{
         });
     }
     else{
-        LoginApi.doLogin(loginValue.value)
-        .then(res=>{
-            const token = res.data.access_token;
-            sessionStorage.setItem('access_token', token);
-            // todo: 화면 이동
-        })
+        LoginApi.doLogin(loginValue.value);
     }
 }
 </script>
