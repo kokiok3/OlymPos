@@ -14,11 +14,14 @@ import ButtonBig from '@/components/buttons/ButtonBig.vue';
 import { useSignUpStore } from '@/stores/SignUpStore';
 const signUpStore = useSignUpStore();
 
+import SignUpApi from '@/apis/SignUpApi';
+
 const schema = Joi.object({
     isErrorId: Joi.string().min(5).max(32).required()
 });
 let validateObj = ref(newValidateObj({
-    isErrorId: false
+    isErrorId: false,
+    isDuplicateId: false,
 }));
 const validate = ()=>{
     return schema.validate({isErrorId: signUp.value.id}, {abortEarly: false});
@@ -26,7 +29,7 @@ const validate = ()=>{
 const signUp = ref({
     id: ''
 });
-const nextStep = ()=>{
+const nextStep = async()=>{
     initValidateObj(validateObj.value);
 
     const validateResult = validate();
@@ -41,10 +44,25 @@ const nextStep = ()=>{
         const params = {
             user_id: signUp.value.id
         }
-        signUpStore.setSignUpInfo(params);
-        
-        router.push({path: '/sign-up/user-pw'});
+        if(await !isIdDuplicate()){
+            signUpStore.setSignUpInfo(params);
+            
+            router.push({path: '/sign-up/user-pw'});
+        }
     }
+}
+const isIdDuplicate = ()=>{
+    return SignUpApi.checkIdDuplicate(signUp.value.id)
+    .then(res=>{
+        if(res === 0){
+            validateObj.value.isDuplicateId = false;
+            return false;
+        }
+        else {
+            validateObj.value.isDuplicateId = true;
+            return true;
+        }
+    });
 }
 </script>
 
@@ -60,6 +78,7 @@ const nextStep = ()=>{
                     <div class="form-row">
                         <InputLogin :type="'text'" :placeholder="'아이디'" v-model="signUp.id" @keyup.enter="nextStep"/>
                         <ValidateMessage v-if="validateObj?.isErrorId" :error-msg="ValidateSignUp.id"/>
+                        <ValidateMessage v-if="validateObj?.isDuplicateId" :error-msg="ValidateSignUp.duplicatedId"/>
                     </div>
                 </form>
                 <ButtonBig @click="nextStep">다음</ButtonBig>

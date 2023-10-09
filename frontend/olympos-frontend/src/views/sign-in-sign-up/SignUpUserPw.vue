@@ -20,7 +20,8 @@ const schema = Joi.object({
 });
 let validateObj = ref(newValidateObj({
     isErrorPassword: false,
-    isErrorPasswordCheck: false
+    isErrorPasswordCheck: false,
+    isDiffrentPassword: false,
 }));
 const validate = ()=>{
     return schema.validate({isErrorPassword: signUp.value.password, isErrorPasswordCheck: signUp.value.passwordCheck}, {abortEarly: false});
@@ -41,12 +42,19 @@ const nextStep = ()=>{
         });
     }
     else{
-        const params = {
-            user_pwd: signUp.value.password
-        }
-        signUpStore.setSignUpInfo(params);
+        if(signUp.value.password === signUp.value.passwordCheck){
+            validateObj.value.isDiffrentPassword = false;
 
-        router.push({path: '/sign-up/term'});
+            const params = {
+                user_pwd: signUp.value.password
+            }
+            signUpStore.setSignUpInfo(params);
+    
+            // router.push({path: '/sign-up/term'});
+        }
+        else {
+            validateObj.value.isDiffrentPassword = true;
+        }
     }
 }
 </script>
@@ -61,12 +69,13 @@ const nextStep = ()=>{
                 <h4 class="login-sub-title">문자, 숫자, 기호를 조합하여 안전한 비밀번호를 만드세요.</h4>
                 <form @submit.prevent>
                     <div class="form-row">
-                        <InputLogin :type="'text'" :placeholder="'비밀번호'" v-model="signUp.password"/>
+                        <InputLogin :type="'password'" :placeholder="'비밀번호'" v-model="signUp.password"/>
                         <ValidateMessage v-if="validateObj?.isErrorPassword" :error-msg="ValidateSignUp.password"/>
                     </div>
                     <div class="form-row">
-                        <InputLogin :type="'text'" :placeholder="'확인'" v-model="signUp.passwordCheck" @keyup.enter="nextStep"/>
+                        <InputLogin :type="'password'" :placeholder="'확인'" v-model="signUp.passwordCheck" @keyup.enter="nextStep"/>
                         <ValidateMessage v-if="validateObj?.isErrorPasswordCheck" :error-msg="ValidateSignUp.passwordCheck"/>
+                        <ValidateMessage v-if="validateObj?.isDiffrentPassword" :error-msg="ValidateSignUp.isDiffrentPassword"/>
                     </div>
                 </form>
                 <ButtonBig @click="nextStep">다음</ButtonBig>

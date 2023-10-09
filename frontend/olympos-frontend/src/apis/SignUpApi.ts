@@ -25,6 +25,27 @@ const SignUpApi = {
             // todo: console.log대신 오류 메세지 창 생성하기
             console.log('err: ', error.message);
         }
+    },
+    checkIdDuplicate(args: SignUpInfo["user_id"]){
+        try {
+            // return DefaultAxios.get('/get-exist-user?user_id=test1009')
+            return DefaultAxios.get('/get-exist-user', {
+                params: {
+                    user_id: args
+                }
+            })
+            .then(res=>{
+                if(res.data.code === 100 && res.data.result === "Success"){
+                    return res.data.isExist;
+                }
+                else {
+                    throw new Error(res.data.code);
+                }
+            });
+        } catch (error) {
+            // todo: console.log대신 오류 메세지 창 생성하기
+            console.log('err: ', error.message);
+        }
     }
 }
 export default SignUpApi;
