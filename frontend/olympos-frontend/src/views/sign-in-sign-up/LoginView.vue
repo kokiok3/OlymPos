@@ -12,6 +12,30 @@ import ButtonBig from '@/components/buttons/ButtonBig.vue';
 
 import LoginApi from '@/apis/LoginApi'
 
+const memorizeId = ref(false);
+const getCookie = (name='memorizeId')=>{
+    const matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+    ));
+    if(matches[1] === 'true'){
+        memorizeId.value = true;
+    }
+    else {
+        memorizeId.value = false;
+    }
+}
+getCookie();
+
+const setCookie = ref({
+    cookieName: 'memorizeId',
+    cookieValue: false,
+    
+})
+const changeCookieSetting = ()=>{
+    setCookie.value.cookieValue = memorizeId.value;
+}
+
+
 const schema = Joi.object({
     isErrorLoginId: Joi.string().required(),
     isErrorLoginPw: Joi.string().required()
@@ -40,7 +64,18 @@ const login = ()=>{
         });
     }
     else{
-        LoginApi.doLogin(loginValue.value);
+        LoginApi.doLogin(loginValue.value)
+        .then(()=>{
+            if(memorizeId.value){
+                const offset = 1000 * 60 * 60 * 9;
+                let date: string | Date = new Date(Date.now() + offset + 86400e3*7);
+                date = date.toUTCString();
+                document.cookie = `${setCookie.value.cookieName}=${setCookie.value.cookieValue}; expires=${date}`;
+            }
+            else {
+                document.cookie = `${setCookie.value.cookieName}=${setCookie.value.cookieValue}; max-age=0`;
+            }
+        })
     }
 }
 </script>
@@ -64,7 +99,7 @@ const login = ()=>{
                     </div>
                 </form>
                 <div class="memorize-id">
-                    <input type="checkbox" id="memorize-id">
+                    <input type="checkbox" id="memorize-id" v-model="memorizeId" @change="changeCookieSetting">
                     <label for="memorize-id">아이디 저장</label>
                 </div>
                 <ButtonBig @click="login">로그인</ButtonBig>
