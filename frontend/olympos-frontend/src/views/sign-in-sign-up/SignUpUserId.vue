@@ -11,8 +11,11 @@ import { newValidateObj, initValidateObj } from '@/validations/ValidateCommon';
 import LogoText from '@/components/logo/LogoText.vue';
 import ButtonBig from '@/components/buttons/ButtonBig.vue';
 
+import { useSignUpStore } from '@/stores/SignUpStore';
+const signUpStore = useSignUpStore();
+
 const schema = Joi.object({
-    isErrorId: Joi.string().required()
+    isErrorId: Joi.string().min(5).max(32).required()
 });
 let validateObj = ref(newValidateObj({
     isErrorId: false
@@ -35,8 +38,12 @@ const nextStep = ()=>{
         });
     }
     else{
+        const params = {
+            user_id: signUp.value.id
+        }
+        signUpStore.setSignUpInfo(params);
+        
         router.push({path: '/sign-up/user-pw'});
-        // 성공 api 날리기
     }
 }
 </script>
@@ -49,7 +56,7 @@ const nextStep = ()=>{
             <div class="login-box">
                 <h2 class="login-title">계정 만들기</h2>
                 <h4 class="login-sub-title">새 아이디를 만드세요.</h4>
-                <form>
+                <form @submit.prevent>
                     <div class="form-row">
                         <InputLogin :type="'text'" :placeholder="'아이디'" v-model="signUp.id" @keyup.enter="nextStep"/>
                         <ValidateMessage v-if="validateObj?.isErrorId" :error-msg="ValidateSignUp.id"/>

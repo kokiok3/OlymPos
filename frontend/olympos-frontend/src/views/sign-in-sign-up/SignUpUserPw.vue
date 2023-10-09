@@ -11,9 +11,12 @@ import { newValidateObj, initValidateObj } from '@/validations/ValidateCommon';
 import LogoText from '@/components/logo/LogoText.vue';
 import ButtonBig from '@/components/buttons/ButtonBig.vue';
 
+import { useSignUpStore } from '@/stores/SignUpStore';
+const signUpStore = useSignUpStore();
+
 const schema = Joi.object({
-    isErrorPassword: Joi.string().required(),
-    isErrorPasswordCheck: Joi.string().required()
+    isErrorPassword: Joi.string().min(8).max(32).required(),
+    isErrorPasswordCheck: Joi.string().min(8).max(32).required()
 });
 let validateObj = ref(newValidateObj({
     isErrorPassword: false,
@@ -38,8 +41,12 @@ const nextStep = ()=>{
         });
     }
     else{
+        const params = {
+            user_pwd: signUp.value.password
+        }
+        signUpStore.setSignUpInfo(params);
+
         router.push({path: '/sign-up/term'});
-        // 성공 api 날리기
     }
 }
 </script>
@@ -52,7 +59,7 @@ const nextStep = ()=>{
             <div class="login-box">
                 <h2 class="login-title">계정 만들기</h2>
                 <h4 class="login-sub-title">문자, 숫자, 기호를 조합하여 안전한 비밀번호를 만드세요.</h4>
-                <form>
+                <form @submit.prevent>
                     <div class="form-row">
                         <InputLogin :type="'text'" :placeholder="'비밀번호'" v-model="signUp.password"/>
                         <ValidateMessage v-if="validateObj?.isErrorPassword" :error-msg="ValidateSignUp.password"/>
