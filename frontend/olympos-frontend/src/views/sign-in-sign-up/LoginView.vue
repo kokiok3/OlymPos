@@ -58,7 +58,7 @@ const login = ()=>{
             <div class="login-box">
                 <h2 class="login-title">로그인</h2>
                 <h4 class="login-sub-title">아이디와 비밀번호를 입력하세요.</h4>
-                <form>
+                <form @submit.prevent>
                     <div class="form-row login-id">
                         <InputLogin :type="'text'" :placeholder="'아이디'" v-model="loginValue.userId"/>
                         <ValidateMessage v-if="validateObj?.isErrorLoginId" :error-msg="ValidateLogin.userId"/>

@@ -11,16 +11,24 @@ import { newValidateObj, initValidateObj } from '@/validations/ValidateCommon';
 import LogoText from '@/components/logo/LogoText.vue';
 import ButtonBig from '@/components/buttons/ButtonBig.vue';
 
+import { useSignUpStore } from '@/stores/SignUpStore';
+const signUpStore = useSignUpStore();
+
 const schema = Joi.object({
     isErrorFirstName: Joi.string().empty(''),
-    isErrorLastName: Joi.string().required()
+    isErrorLastName: Joi.string().required(),
+    sumName: Joi.string().min(2).max(128)
 });
 let validateObj = ref(newValidateObj({
     isErrorFirstName: false,
     isErrorLastName: false
 }));
 const validate = ()=>{
-    return schema.validate({isErrorFirstName: signUp.value.firstName, isErrorLastName: signUp.value.lastName}, {abortEarly: false});
+    return schema.validate({
+        isErrorFirstName: signUp.value.firstName,
+        isErrorLastName: signUp.value.lastName,
+        sumName: signUp.value.firstName+signUp.value.lastName
+    }, {abortEarly: false});
 }
 const signUp = ref({
     firstName: '',
@@ -38,8 +46,12 @@ const nextStep = ()=>{
         });
     }
     else{
+        const params = {
+            name: `${signUp.value.firstName}-${signUp.value.lastName}`
+        }
+        signUpStore.setSignUpInfo(params);
+
         router.push({path: '/sign-up/user-info'});
-        // 성공 api 날리기
     }
 }
 </script>
@@ -52,7 +64,7 @@ const nextStep = ()=>{
             <div class="login-box">
                 <h2 class="login-title">계정 만들기</h2>
                 <h4 class="login-sub-title">이름을 입력하세요.</h4>
-                <form>
+                <form @submit.prevent>
                     <div class="form-row">
                         <InputLogin :type="'text'" :placeholder="'성(선택사항)'" v-model="signUp.firstName"/>
                         <ValidateMessage v-if="validateObj?.isErrorFirstName" :error-msg="ValidateSignUp.firstName"/>

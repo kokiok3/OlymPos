@@ -12,8 +12,11 @@ import { newValidateObj, initValidateObj } from '@/validations/ValidateCommon';
 import LogoText from '@/components/logo/LogoText.vue';
 import ButtonBig from '@/components/buttons/ButtonBig.vue';
 
+import { useSignUpStore } from '@/stores/SignUpStore';
+const signUpStore = useSignUpStore();
+
 const schema = Joi.object({
-    isErrorPhone: Joi.string(),
+    isErrorPhone: Joi.string().min(11).max(16).required(),
     isErrorEmail: Joi.string().email({tlds: false}).required()
 });
 let validateObj = ref(newValidateObj({
@@ -42,12 +45,21 @@ const nextStep = ()=>{
         });
     }
     else{
+        const params = {
+            phone: Object.values(signUp.value.phone).join('-'),
+            email: signUp.value.email
+        }
+        signUpStore.setSignUpInfo(params);
+
         router.push({path: '/sign-up/user-id'});
-        // 성공 api 날리기
     }
 }
-
-const changePhone = (changedPhone)=>{
+interface Phone {
+    first: '';
+    middle: '';
+    last: '';
+}
+const changePhone = (changedPhone: Phone)=>{
     signUp.value.phone = changedPhone;
 }
 </script>
@@ -60,7 +72,7 @@ const changePhone = (changedPhone)=>{
             <div class="login-box">
                 <h2 class="login-title">계정 만들기</h2>
                 <h4 class="login-sub-title">연락처와 이메일을 입력하세요.</h4>
-                <form>
+                <form @submit.prevent>
                     <div class="form-row">
                         <InputPhone @change-phone="changePhone"/>
                         <ValidateMessage v-if="validateObj?.isErrorPhone" :error-msg="ValidateSignUp.phone"/>
