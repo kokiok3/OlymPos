@@ -12,7 +12,7 @@ const LoginApi = {
             user_pwd: args.userPw
         }
         try {
-            DefaultAxios.post('/admin-login', params)
+            return DefaultAxios.post('/admin-login', params)
             .then(res=>{
                 if(res.data.code === 100 && res.data.result === "Success"){
                     const token = res.data.access_token;
