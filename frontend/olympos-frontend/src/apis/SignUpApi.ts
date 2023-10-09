@@ -9,21 +9,22 @@ interface SignUpInfo {
     email: string;
 }
 
-const methods = {
+const SignUpApi = {
     createAccount(args: SignUpInfo){
-        return DefaultAxios.post('/signup', args)
-        .then(res=>{
-            if(res.data.code === 100 && res.data.result === "Success"){
-                router.push({path: '/sign-up/complete'});
-            }
-            else {
-                throw new Error(res.data.code);
-            }
-        })
-        .catch(err=>{
+        try {
+            DefaultAxios.post('/signup', args)
+            .then(res=>{
+                if(res.data.code === 100 && res.data.result === "Success"){
+                    router.push({path: '/sign-up/complete'});
+                }
+                else {
+                    throw new Error(res.data.code);
+                }
+            });
+        } catch (error) {
             // todo: console.log대신 오류 메세지 창 생성하기
-            console.log('err: ', err.message);
-        })
+            console.log('err: ', error.message);
+        }
     }
 }
-export default methods;
+export default SignUpApi;
