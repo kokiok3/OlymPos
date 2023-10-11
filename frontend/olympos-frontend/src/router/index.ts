@@ -43,7 +43,13 @@ const router = createRouter({
     {
       path: '/sign-up/complete',
       name: 'sign-up/complete',
+
       component: SignUpComplete
+    },
+    {
+      path: '/main-home',
+      name: 'main-home',
+      component: ()=>import('@/views/home/MainHome.vue')
     },
   ]
 })
