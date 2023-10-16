@@ -61,14 +61,14 @@ nav {
     flex-direction: column;
     gap: 9px;
 }
-.middle button {
+.middle a {
     padding: 7px 10px;
-    background-color: transparent;
-    border: none;
+    text-decoration: none;
+    color: unset;
     border-radius: 5px;
     text-align: left;
 }
-.middle button:hover {
+.middle a:hover {
     background-color: var(--main);
     color: var(--main-white);
 }
