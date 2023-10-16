@@ -5,7 +5,7 @@
             <div class="user_profile">k</div>
         </div>
         <div class="middle">
-            <button v-for="(item, index) in menuName" :key="index">{{ item }}</button>
+            <RouterLink v-for="(item, index) in menuName" :key="index" :to="item.path">{{ item.korName }}</RouterLink>
         </div>
         <div class="bottom">
             <button>
@@ -17,11 +17,34 @@
 </template>
 
 <script setup lang="ts">
+import { RouterLink } from 'vue-router'
 import LogoText from '@/components/logo/LogoText.vue';
 
 import { ref } from 'vue';
 
-const menuName = ref(['매장 관리', '메뉴 관리', '주문 관리', '주문 내역', '매출 관리']);
+const menuName = ref([
+    {
+        korName: '매장 관리',
+        path: '/',
+        // path: '/stores',
+    },
+    {
+        korName: '메뉴 관리',
+        path: '/menus',
+    },
+    {
+        korName: '주문 관리',
+        path: '/orders',
+    },
+    {
+        korName: '주문 내역',
+        path: 'order-historys',
+    },
+    {
+        korName: '매출 관리',
+        path: '/sales',
+    }
+]);
 </script>
 
 <style scoped>
