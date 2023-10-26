@@ -8,6 +8,5 @@
 
 <style scoped>
 .table {
-    font-weight: 600;
 }
 </style>

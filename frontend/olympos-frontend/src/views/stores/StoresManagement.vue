@@ -33,5 +33,6 @@ import Table from '@/components/tables/TableView.vue';
 }
 .store_wrapper {
     margin-top: 50px;
+    padding-bottom: 50px;
 }
 </style>
