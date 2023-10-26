@@ -12,7 +12,7 @@
                 </template>
 
                 <template #table>
-                    ContentTable
+                    <Table></Table>
                 </template>
             </ContentView>
         </div>
@@ -23,7 +23,7 @@
 import ImageSlider from '@/views/stores/ImageSlider.vue';
 import ContentView from '@/components/contents/ContentView.vue';
 import ButtonRectangle from '@/components/buttons/ButtonRectangle.vue';
-
+import Table from '@/components/tables/TableView.vue';
 </script>
 
 <style scoped>
