@@ -19,7 +19,7 @@ import { ref, onMounted } from 'vue';
 interface ColDef {
     header: string;
     value: string;
-    ratio: string;
+    ratio: number;
 }
 interface RowData {
     [key: string]: string | number | boolean;
@@ -38,7 +38,7 @@ class CreateTable {
         const theadRow = document.getElementById('theadRow')!;
         this.colDef.forEach(e=>{
             const createTh = document.createElement('th');
-            createTh.setAttribute('width', e.ratio.toString()+'px');
+            createTh.setAttribute('width', (e.ratio*10).toString()+'px');
             createTh.innerText = e.header;
             theadRow.appendChild(createTh);
             
@@ -67,11 +67,11 @@ const tableHeader = ref<string[]>([]);
 
 const testHeader = [
     { header: '번호', value: 'number', ratio: 1 },
-    { header: '매장명', value: 'storeName', ratio: 2 },
-    { header: '매장 전화번호', value: 'storeCall', ratio: 2 },
-    { header: '주소', value: 'storeAddress', ratio: 2 },
-    { header: '사장님 성함', value: 'owner', ratio: 2 },
-    { header: '테이블 개수', value: 'tableCount', ratio: 2 },
+    { header: '매장명', value: 'storeName', ratio: 5 },
+    { header: '매장 전화번호', value: 'storeCall', ratio: 5 },
+    { header: '주소', value: 'storeAddress', ratio: 5 },
+    { header: '사장님 성함', value: 'owner', ratio: 5 },
+    { header: '테이블 개수', value: 'tableCount', ratio: 5 },
     { header: '수정', value: 'edit', ratio: 2 },
     { header: '삭제', value: 'delete', ratio: 2 },
 ];
