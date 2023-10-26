@@ -6,8 +6,6 @@
                 </tr>
             </thead>
             <tbody id="tbody">
-                <tr>
-                </tr>
             </tbody>
         </table>
     </div>
@@ -24,6 +22,8 @@ interface ColDef {
 interface RowData {
     [key: string]: string | number | boolean;
 }
+
+const tableHeader = ref<string[]>([]);
 
 class CreateTable {
     colDef: ColDef[];
@@ -58,12 +58,13 @@ class CreateTable {
             tbody.appendChild(createRow);
         });
     }
+    setStyle(){
+        const rowsInTbody = document.getElementById('tbody')?.childNodes as NodeListOf<HTMLElement>;
+        rowsInTbody.forEach(e=>{
+            e.style.cssText = 'height: 45px; border-bottom: 1px solid var(--main-gray-3);';
+        });
+    }
 }
-
-const tableHeader = ref<string[]>([]);
-
-
-
 
 const testHeader = [
     { header: '번호', value: 'number', ratio: 1 },
@@ -118,11 +119,18 @@ onMounted(() => {
     const row1 = new CreateTable(testHeader, testBody);
     row1.createColumn();
     row1.createBody();
+    row1.setStyle();
 });
 </script>
 
 <style scoped>
 table {
     width: 100%;
+    text-align: left;
+    font-size: 12px;
+    border-collapse: collapse;
+}
+tr {
+    height: 47px;
 }
 </style>
