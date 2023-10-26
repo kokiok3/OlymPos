@@ -53,7 +53,7 @@ nav {
     padding: 27px 12px 10px 12px;
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    justify-content: space-between;
     font-size: 13px;
     font-weight: 400;
     background-color: var(--main-mute-1);
