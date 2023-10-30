@@ -59,10 +59,28 @@ class CreateTable {
         });
     }
     setStyle(){
+        this.setRowStyle();
+        this.setRowHover();
+    }
+    setRowStyle(){
         const rowsInTbody = document.getElementById('tbody')?.childNodes as NodeListOf<HTMLElement>;
         rowsInTbody.forEach(e=>{
             e.style.cssText = 'height: 45px; border-bottom: 1px solid var(--main-gray-3);';
         });
+    }
+    setRowHover(){
+        const tbody = document.getElementById('tbody');
+        tbody?.addEventListener("mouseover", (e: Event)=>{
+            console.log(e)
+            if(!e.target) return;
+            (e.target as HTMLInputElement).parentElement!.style.backgroundColor = 'var(--main-mute-1)';
+        });
+
+        tbody?.addEventListener("mouseout", (e)=>{
+            if(!e.target) return;
+            (e.target as HTMLInputElement).parentElement!.style.backgroundColor = '';
+        });
+
     }
 }
 
