@@ -3,170 +3,35 @@
         <table>
             <thead>
                 <tr id="theadRow">
-                    <th v-for="(item, index) in testHeader" :key="index" :style="{width: item.ratio*10+'px'}">{{ item.header }}</th>
+                    <th v-for="(item, index) in colDef" :key="index" :style="{width: item.ratio*10+'px'}">{{ item.header }}</th>
                 </tr>
             </thead>
             <tbody id="tbody">
-                <!-- todo -->
-                <tr v-for="(rowData, index) in testBody" :key="index">
-                    <td v-for="header in testHeader" :key="header.value">
+                <tr v-for="(item, index) in rowData" :key="index">
+                    <td v-for="header in colDef" :key="header.value">
                         <template v-if="header.value === 'number'">
                             {{ index + 1 }}
                         </template>
 
-                        <component v-else-if="header.extend === true" :is="rowData[header.value].component">
-                            <slot>{{rowData[header.value].slot}}</slot>
+                        <component v-else-if="header.extend === true" :is="item[header.value].component">
+                            <slot>{{item[header.value].slot}}</slot>
                         </component>
                         
                         <template v-else>
-                            {{ rowData[header.value] }}
+                            {{ item[header.value] }}
                         </template>
                     </td>
                 </tr>
-                <!-- todo end -->
             </tbody>
         </table>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-
-interface ColDef {
-    header: string;
-    value: string;
-    ratio: number;
-    extend?: boolean;
-}
-interface RowData {
-    [key: string]: string | number | boolean | Extend;
-}
-interface Extend {
-    component: typeof ButtonInTable;
-    slot: string | number;
-}
-
-// const tableHeader = ref<string[]>([]);
-
-// class CreateTable {
-//     colDef: ColDef[];
-//     rowData: RowData[];
-
-//     constructor(colDef: ColDef[], rowData: RowData[]) {
-//         this.colDef = colDef;
-//         this.rowData = rowData;
-//     }
-
-//     createColumn(){
-//         const theadRow = document.getElementById('theadRow')!;
-//         this.colDef.forEach(e=>{
-//             const createTh = document.createElement('th');
-//             createTh.setAttribute('width', (e.ratio*10).toString()+'px');
-//             createTh.innerText = e.header;
-//             theadRow.appendChild(createTh);
-            
-//             tableHeader.value.push(e.value);
-//         });
-//     }
-//     createBody(){
-//         const tbody = document.getElementById('tbody')!;
-//         this.rowData.forEach((e, i)=>{
-//             const createRow = document.createElement('tr');
-//             tableHeader.value.forEach(ee=>{
-//                 const createCell = document.createElement('td');
-//                 const cellValue = ee === 'number'? i+1 : e[ee];
-//                 createCell.innerHTML = cellValue as string;
-//                 createRow.appendChild(createCell);
-//             });
-//             tbody.appendChild(createRow);
-//         });
-//     }
-//     setStyle(){
-//         this.setRowStyle();
-//         this.setRowHover();
-//     }
-//     setRowStyle(){
-//         const rowsInTbody = document.getElementById('tbody')?.childNodes as NodeListOf<HTMLElement>;
-//         rowsInTbody.forEach(e=>{
-//             e.style.cssText = 'height: 45px; border-bottom: 1px solid var(--main-gray-3);';
-//         });
-//     }
-//     setRowHover(){
-//         const tbody = document.getElementById('tbody');
-//         tbody?.addEventListener("mouseover", (e: Event)=>{
-//             if(!e.target) return;
-//             (e.target as HTMLInputElement).parentElement!.style.backgroundColor = 'var(--main-mute-1)';
-//         });
-
-//         tbody?.addEventListener("mouseout", (e)=>{
-//             if(!e.target) return;
-//             (e.target as HTMLInputElement).parentElement!.style.backgroundColor = '';
-//         });
-
-//     }
-// }
-
-onMounted(() => {
-    // const row1 = new CreateTable(testHeader, testBody);
-    // row1.createColumn();
-    // todo
-    // row1.createBody();
-    // row1.setStyle();
-    // todo end
-});
-
-const testHeader: ColDef[] = [
-    { header: '번호', value: 'number', ratio: 1 },
-    { header: '매장명', value: 'storeName', ratio: 5 },
-    { header: '매장 전화번호', value: 'storeCall', ratio: 5 },
-    { header: '주소', value: 'storeAddress', ratio: 5 },
-    { header: '사장님 성함', value: 'owner', ratio: 5 },
-    { header: '테이블 개수', value: 'tableCount', ratio: 5 },
-    { header: '수정', value: 'edit', ratio: 2, extend: true },
-    { header: '삭제', value: 'delete', ratio: 2, extend: true },
-];
-
-import ButtonInTable from '@/components/buttons/ButtonInTable.vue';
-const testBody: RowData[] = [
-    {
-        storeName: '토끼분식',
-        storeCall: '033-333-3333',
-        storeAddress: '강원도 원주시 토끼동',
-        owner: '정녕훈',
-        tableCount: '30',
-        edit: {component: ButtonInTable, slot: '수정'},
-        delete: {component: ButtonInTable, slot: '삭제'},
-    },
-    {
-        storeName: '음메레스토랑트',
-        storeCall: '033-333-3333',
-        storeAddress: '서울시 음메읍 음메리',
-        owner: '통정소희',
-        tableCount: '20',
-        edit: {component: ButtonInTable, slot: '수정'},
-        delete: {component: ButtonInTable, slot: '삭제'},
-    },
-    {
-        storeName: '호호애견샵',
-        storeCall: '033-333-3333',
-        storeAddress: '성원아파트',
-        owner: '정소현',
-        tableCount: '5',
-        edit: {component: ButtonInTable, slot: '수정'},
-        delete: {component: ButtonInTable, slot: '삭제'},
-    },
-    {
-        storeName: '호호애견샵',
-        storeCall: '033-333-3333',
-        storeAddress: '성원아파트',
-        owner: '정소현',
-        tableCount: '5',
-        edit: {component: ButtonInTable, slot: '수정'},
-        delete: {component: ButtonInTable, slot: '삭제'},
-    },
-];
-
-
+const props = defineProps({
+    colDef: Object,
+    rowData: Object
+})
 </script>
 
 <style scoped>
@@ -179,7 +44,6 @@ table {
 tr {
     height: 47px;
 }
-/* todo */
 tbody tr {
     height: 45px;
     border-bottom: 1px solid var(--main-gray-3);
@@ -187,5 +51,4 @@ tbody tr {
 tr:hover {
     background-color: var(--main-mute-1);
 }
-/* todo end */
 </style>
