@@ -19,6 +19,7 @@ import { RouterView } from 'vue-router';
 .sidebar_menu {
     min-width: 192px;
     position: fixed;
+    z-index: 3;
 }
 .content_view {
     margin-left: 192px;
