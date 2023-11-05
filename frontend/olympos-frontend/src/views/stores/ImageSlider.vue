@@ -19,19 +19,31 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, onUnmounted } from 'vue';
+
+let container: Element | undefined = undefined;
+let slides: Element | undefined = undefined;
+let btnLeft: Element | undefined = undefined;
+let btnRight: Element | undefined = undefined;
+
+let offset = 0;
+let slideIncrement = 0;
+let slideDecrement: number | undefined = undefined;
+
+let moveNext = undefined;
+let movePrev = undefined;
+
+let intervalNext;
 
 onMounted(()=>{
-    const container = document.querySelector('.slider_container');
-    const slides = document.querySelectorAll('.slide');
-    const btnLeft = document.querySelector('.top_banner_arrow.prev');
-    const btnRight = document.querySelector('.top_banner_arrow.next');
+    container = document.querySelector('.slider_container');
+    slides = document.querySelectorAll('.slide');
+    btnLeft = document.querySelector('.top_banner_arrow.prev');
+    btnRight = document.querySelector('.top_banner_arrow.next');
     
-    let offset = 0;
-    let slideIncrement = 0;
-    let slideDecrement = slides.length - 1;
+    slideDecrement = slides.length - 1;
     
-    btnRight?.addEventListener('click', ()=>{
+    moveNext = ()=>{
         btnRight.disabled = true;
         offset = slides[0].offsetWidth;
         container.style.transition = 'ease-in-out 1000ms';
@@ -52,9 +64,8 @@ onMounted(()=>{
             }
             btnRight.disabled = false;
         }, 1000);
-    });
-
-    btnLeft?.addEventListener('click', ()=>{
+    }
+    movePrev = ()=>{
         btnLeft.disabled = true;
         offset = slides[0].offsetWidth;
         container.style.transition = 'none';
@@ -77,7 +88,18 @@ onMounted(()=>{
             slideIncrement = slideDecrement + 1;
             btnLeft.disabled = false;
         }, 1000)
-    });
+    }
+
+    btnRight?.addEventListener('click', moveNext);
+    btnLeft?.addEventListener('click', movePrev);
+
+    intervalNext = setInterval(moveNext, 3000);
+});
+
+onUnmounted(() => {
+    btnRight?.removeEventListener('click', moveNext);
+    btnLeft?.removeEventListener('click', movePrev);
+    clearInterval(intervalNext)
 });
 </script>
 
