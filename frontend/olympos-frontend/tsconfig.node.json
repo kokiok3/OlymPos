@@ -1,3 +1,4 @@
+// node에서의 typescript 설정
 {
   "extends": "@tsconfig/node18/tsconfig.json",
   "include": [
