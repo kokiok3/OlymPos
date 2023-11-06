@@ -84,7 +84,7 @@ const testBody: RowData<typeof ButtonInTable>[] = [
     margin-bottom: 0;
 }
 .store_wrapper {
-    margin-top: 50px;
+    margin-top: 40px;
     padding-bottom: 50px;
 }
 </style>
