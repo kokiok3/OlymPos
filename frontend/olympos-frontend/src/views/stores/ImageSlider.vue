@@ -21,19 +21,19 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted } from 'vue';
 
-let container: Element | undefined = undefined;
-let slides: Element | undefined = undefined;
-let btnLeft: Element | undefined = undefined;
-let btnRight: Element | undefined = undefined;
+let container: HTMLElement | null = null;
+let slides: NodeListOf<HTMLElement> | null = null;
+let btnLeft: HTMLButtonElement | null = null;
+let btnRight: HTMLButtonElement | null = null;
 
 let offset = 0;
 let slideIncrement = 0;
-let slideDecrement: number | undefined = undefined;
+let slideDecrement = 0;
 
-let moveNext = undefined;
-let movePrev = undefined;
+let moveNext: ()=>void;
+let movePrev: ()=>void;
 
-let intervalNext;
+let intervalNext: NodeJS.Timeout;
 
 onMounted(()=>{
     container = document.querySelector('.slider_container');
@@ -41,64 +41,88 @@ onMounted(()=>{
     btnLeft = document.querySelector('.top_banner_arrow.prev');
     btnRight = document.querySelector('.top_banner_arrow.next');
     
-    slideDecrement = slides.length - 1;
-    
-    moveNext = ()=>{
-        btnRight.disabled = true;
-        offset = slides[0].offsetWidth;
-        container.style.transition = 'ease-in-out 1000ms';
-        container.style.left = -offset + 'px';
-        
-        setTimeout(()=>{
-            container.style.transition = 'none';
-            slides[slideIncrement].style.order = slides.length - 1;
-            container.style.left = '';
-            
-            slideIncrement++;
-            slideDecrement = slideIncrement - 1;
-            if(slideIncrement === slides.length){
-                slideIncrement = 0;
-                slides.forEach(slide=>{
-                    slide.style.order = 'initial';
-                });
+    if (container && slides && btnLeft && btnRight) {
+        slideDecrement = slides.length - 1;
+
+        moveNext = ()=>{
+            if(slides){
+                btnRight!.disabled = true;
+                offset = slides[0].offsetWidth;
+                container!.style.transition = 'ease-in-out 1000ms';
+                container!.style.left = -offset + 'px';
+                
+                setTimeout(()=>{
+                    if(slides){
+                        container!.style.transition = 'none';
+                        slides[slideIncrement].style.order = String(slides.length - 1);
+                        container!.style.left = '';
+                        
+                        slideIncrement++;
+                        slideDecrement = slideIncrement - 1;
+                        if(slideIncrement === slides.length){
+                            slideIncrement = 0;
+                            slides.forEach(slide=>{
+                                slide.style.order = 'initial';
+                            });
+                        }
+                        btnRight!.disabled = false;
+                    }
+                }, 1000);
             }
-            btnRight.disabled = false;
-        }, 1000);
-    }
-    movePrev = ()=>{
-        btnLeft.disabled = true;
-        offset = slides[0].offsetWidth;
-        container.style.transition = 'none';
-        if(slideDecrement < 0){
-            slides.forEach(slide=>{
-                slide.style.order = 'initial';
-            });
-            slideDecrement = slides.length - 1;
         }
-        slides[slideDecrement].style.order = '-1';
-        container.style.left = -offset + 'px';
-        
-        setTimeout(()=>{
-            container.style.transition = 'ease-in-out 1000ms';
-            container.style.left = 0;
-        }, 1);
-        
-        setTimeout(()=>{
-            slideDecrement--;
-            slideIncrement = slideDecrement + 1;
-            btnLeft.disabled = false;
-        }, 1000)
+        movePrev = ()=>{
+            if(slides){
+                btnLeft!.disabled = true;
+                offset = slides[0].offsetWidth;
+                container!.style.transition = 'none';
+                if(slideDecrement < 0){
+                    slides.forEach(slide=>{
+                        slide.style.order = 'initial';
+                    });
+                    slideDecrement = slides.length - 1;
+                }
+                slides[slideDecrement].style.order = '-1';
+                container!.style.left = -offset + 'px';
+                
+                setTimeout(()=>{
+                    container!.style.transition = 'ease-in-out 1000ms';
+                    container!.style.left = '0';
+                }, 1);
+                
+                setTimeout(()=>{
+                    slideDecrement--;
+                    slideIncrement = slideDecrement + 1;
+                    btnLeft!.disabled = false;
+                }, 1000)
+            }
+        }
+        const pauseIntervalForMovePrev = ()=>{
+            clearInterval(intervalNext);
+            movePrev();
+            setTimeout(() => {
+                intervalNext = setInterval(moveNext, 3000);
+            }, 0);
+        }
+        const pauseIntervalForMoveNext = ()=>{
+            clearInterval(intervalNext);
+            moveNext();
+            setTimeout(() => {
+                intervalNext = setInterval(moveNext, 3000);
+            }, 0);
+        }
+
+        btnRight.addEventListener('click', pauseIntervalForMoveNext);
+        btnLeft.addEventListener('click', pauseIntervalForMovePrev);
+
+        intervalNext = setInterval(moveNext, 3000);
     }
-
-    btnRight?.addEventListener('click', moveNext);
-    btnLeft?.addEventListener('click', movePrev);
-
-    intervalNext = setInterval(moveNext, 3000);
 });
 
 onUnmounted(() => {
-    btnRight?.removeEventListener('click', moveNext);
-    btnLeft?.removeEventListener('click', movePrev);
+    if(btnRight && btnLeft){
+        btnRight.removeEventListener('click', moveNext);
+        btnLeft.removeEventListener('click', movePrev);
+    }
     clearInterval(intervalNext)
 });
 </script>
