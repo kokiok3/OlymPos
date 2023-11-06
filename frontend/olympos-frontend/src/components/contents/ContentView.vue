@@ -15,7 +15,7 @@ import ContentTable from '@/components/contents/ContentTable.vue';
 
 <style scoped>
 .content_title {
-    /* margin-bottom: 60px; */
+    font-size: 21px;
 }
 .content_btn_area {
     margin: 30px 0;
