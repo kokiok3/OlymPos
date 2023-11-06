@@ -48,7 +48,7 @@ tbody tr {
     height: 45px;
     border-bottom: 1px solid var(--main-gray-3);
 }
-tr:hover {
+tbody tr:hover {
     background-color: var(--main-mute-1);
 }
 </style>
