@@ -101,5 +101,6 @@ nav {
 .bottom button {
     background-color: transparent;
     border: none;
+    font-size: 13px;
 }
 </style>
