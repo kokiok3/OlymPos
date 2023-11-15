@@ -1,0 +1,25 @@
+@import './source.css';
+@import './main-font.css';
+@import './fontawesome/css/fontawesome.css';
+@import './fontawesome/css/solid.css';
+
+label {
+    cursor: pointer;
+}
+.validate-error {
+    font-size: 13px;
+    color: var( --main-error-1);
+}
+.validate-error span {
+    margin-left: 8px;
+}
+button {
+    cursor: pointer;
+}
+.mr10 {
+    margin-right: 10px;
+}
+@media (hover: hover) {}
+
+@media (min-width: 1024px) {
+}
