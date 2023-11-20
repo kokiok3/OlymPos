@@ -68,7 +68,9 @@ nav {
     font-size: 15px;
 }
 .top .user_profile {
-    padding-top: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 30px;
     height: 30px;
     border: 1px solid;
@@ -96,7 +98,6 @@ nav {
     color: var(--main-white);
 }
 .bottom {
-    margin-left: 10px;
 }
 .bottom button {
     background-color: transparent;

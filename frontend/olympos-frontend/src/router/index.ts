@@ -49,6 +49,10 @@ const router = createRouter({
                     component: ()=>import('@/views/stores/StoresManagement.vue')
                 },
                 {
+                    path: '/store/create',
+                    component: ()=>import('@/views/stores/CreateStore.vue')
+                },
+                {
                     path: '/menus',
                     name: 'menus',
                     component: ()=>import('@/views/menus/MenusManagement.vue')
