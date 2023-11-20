@@ -17,7 +17,7 @@ const getCookie = (name='memorizeId')=>{
     const matches = document.cookie.match(new RegExp(
         "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
     ));
-    if(matches[1] === 'true'){
+    if(matches && matches[1] === 'true'){
         memorizeId.value = true;
     }
     else {
