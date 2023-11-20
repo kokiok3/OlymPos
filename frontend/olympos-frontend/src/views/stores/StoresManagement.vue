@@ -8,7 +8,7 @@
                 </template>
 
                 <template #buttonArea>
-                    <ButtonRectangle>매장 추가</ButtonRectangle>
+                    <ButtonRectangle @click="goCreateStore">매장 추가</ButtonRectangle>
                 </template>
 
                 <template #table>
@@ -27,6 +27,8 @@ import ButtonRectangle from '@/components/buttons/ButtonRectangle.vue';
 import Table from '@/components/tables/TableView.vue';
 import ButtonInTable from '@/components/buttons/ButtonInTable.vue';
 import type { ColDef, RowData} from '@/types/TableView';
+
+import router from '@/router';
 
 const testHeader: ColDef[] = [
     { header: '번호', value: 'number', ratio: 1 },
@@ -76,6 +78,10 @@ const testBody: RowData<typeof ButtonInTable>[] = [
         delete: {component: ButtonInTable, slot: '삭제'},
     },
 ];
+
+const goCreateStore = ()=>{
+    router.push('/store/create');
+}
 </script>
 
 <style scoped>
