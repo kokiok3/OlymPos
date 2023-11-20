@@ -13,6 +13,12 @@ label {
 .validate-error span {
     margin-left: 8px;
 }
+button {
+    cursor: pointer;
+}
+.mr10 {
+    margin-right: 10px;
+}
 @media (hover: hover) {}
 
 @media (min-width: 1024px) {
