@@ -46,6 +46,8 @@ import { newValidateObj, initValidateObj, errorMsg } from '@/validations/Validat
 import { ref, type Ref } from 'vue';
 import router from '@/router';
 
+import StoreApi from '@/apis/StoreApi';
+import { type createStoreBody } from '@/types/StoreTypes';
 const schema = Joi.object({
     isErrorStoreName: Joi.string().required(),
     isErrorStorePhoneNumber: Joi.string().required(),
@@ -103,8 +105,17 @@ const createStore = ()=>{
         });
     }
     else {
-        // todo: API 연결
-        alert('매장등록 api 연결해라')
+        const params: createStoreBody = {
+            name: formCreateStore.value.storeName as string,
+            owner: formCreateStore.value.storePhoneNumber as string,
+            address: formCreateStore.value.storeAddress as string,
+            tel_num: formCreateStore.value.storeOwner as string,
+            count: Number(formCreateStore.value.storeTableCnt) as number,
+        }
+
+        StoreApi.createStore(params)
+        .then(()=>{
+        });
     }
 }
 </script>
