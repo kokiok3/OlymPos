@@ -13,7 +13,7 @@ import { RouterView } from 'vue-router';
 <style scoped>
 .main_home {
     height: 100vh;
-    width: 100vw;
+    width: -webkit-fill-available;
     display: flex;
 }
 .sidebar_menu {

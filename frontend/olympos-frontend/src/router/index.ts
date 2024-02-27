@@ -41,31 +41,35 @@ const router = createRouter({
         {
             path: '/',
             component: ()=>import('@/views/home/MainHome.vue'),
-            // redirect: '/stores',
+            redirect: '/store',
             children: [
                 {
-                    path: '',
-                    name: 'stores',
+                    path: '/store',
+                    name: 'store',
                     component: ()=>import('@/views/stores/StoresManagement.vue')
                 },
                 {
-                    path: '/menus',
-                    name: 'menus',
+                    path: '/store/create',
+                    component: ()=>import('@/views/stores/CreateStore.vue')
+                },
+                {
+                    path: '/menu',
+                    name: 'menu',
                     component: ()=>import('@/views/menus/MenusManagement.vue')
                 },
                 {
-                    path: '/orders',
-                    name: 'orders',
+                    path: '/order',
+                    name: 'order',
                     component: ()=>import('@/views/orders/OrdersManagement.vue')
                 },
                 {
-                    path: '/order-historys',
-                    name: 'order-historys',
+                    path: '/order-history',
+                    name: 'order-history',
                     component: ()=>import('@/views/orders/OrderHistorys.vue')
                 },
                 {
-                    path: '/sales',
-                    name: 'sales',
+                    path: '/sale',
+                    name: 'sale',
                     component: ()=>import('@/views/sales/SalesManagement.vue')
                 },
             ]

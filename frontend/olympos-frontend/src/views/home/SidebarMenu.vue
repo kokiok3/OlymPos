@@ -25,24 +25,23 @@ import { ref } from 'vue';
 const menuName = ref([
     {
         korName: '매장 관리',
-        path: '/',
-        // path: '/stores',
+        path: '/store',
     },
     {
         korName: '메뉴 관리',
-        path: '/menus',
+        path: '/menu',
     },
     {
         korName: '주문 관리',
-        path: '/orders',
+        path: '/order',
     },
     {
         korName: '주문 내역',
-        path: 'order-historys',
+        path: 'order-history',
     },
     {
         korName: '매출 관리',
-        path: '/sales',
+        path: '/sale',
     }
 ]);
 </script>
@@ -68,7 +67,9 @@ nav {
     font-size: 15px;
 }
 .top .user_profile {
-    padding-top: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 30px;
     height: 30px;
     border: 1px solid;
@@ -96,7 +97,6 @@ nav {
     color: var(--main-white);
 }
 .bottom {
-    margin-left: 10px;
 }
 .bottom button {
     background-color: transparent;

@@ -11,3 +11,7 @@ export const initValidateObj = (args: ValidateDefaultObj)=>{
         validateObj[element] = false;
     });
 }
+
+export const errorMsg = {
+    required: '필수 정보 입니다.',
+}
