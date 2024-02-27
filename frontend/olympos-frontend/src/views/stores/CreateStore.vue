@@ -5,6 +5,10 @@
         </template>
 
         <template #form>
+            <Notivue v-slot="item">
+                <Notification :item="item" />
+            </Notivue>
+            
             <div>
                 <ManagementInput :title="'매장 명'" :placeholder="'운영하고 계신 매장 이름을 입력해 주세요.'" v-model="formCreateStore.storeName"></ManagementInput>
                 <ValidateMessage v-if="validateObj?.isErrorStoreName" :error-msg="errorMsg.required"/>
@@ -48,6 +52,8 @@ import router from '@/router';
 
 import StoreApi from '@/apis/StoreApi';
 import { type createStoreBody } from '@/types/StoreTypes';
+import { Notivue, Notification, push } from 'notivue';
+
 const schema = Joi.object({
     isErrorStoreName: Joi.string().required(),
     isErrorStorePhoneNumber: Joi.string().required(),
@@ -115,6 +121,8 @@ const createStore = ()=>{
 
         StoreApi.createStore(params)
         .then(()=>{
+            router.push('/store');
+            push.success('Something good has been pushed!');
         });
     }
 }
