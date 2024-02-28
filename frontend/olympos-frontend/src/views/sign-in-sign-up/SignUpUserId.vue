@@ -56,7 +56,8 @@ const nextStep = async()=>{
 const isIdDuplicate = ()=>{
     return SignUpApi.checkIdDuplicate(signUp.value.id)
     .then(res=>{
-        if(res === 0){
+        const isIdAvailable = res === 0 ? true : false;
+        if(isIdAvailable){
             validateObj.value.isDuplicateId = false;
             return false;
         }
