@@ -50,7 +50,7 @@ const nextStep = ()=>{
             }
             signUpStore.setSignUpInfo(params);
     
-            // router.push({path: '/sign-up/term'});
+            router.push({path: '/sign-up/term'});
         }
         else {
             validateObj.value.isDiffrentPassword = true;
