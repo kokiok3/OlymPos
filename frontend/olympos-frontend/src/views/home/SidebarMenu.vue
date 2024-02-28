@@ -25,24 +25,23 @@ import { ref } from 'vue';
 const menuName = ref([
     {
         korName: '매장 관리',
-        path: '/',
-        // path: '/stores',
+        path: '/store',
     },
     {
         korName: '메뉴 관리',
-        path: '/menus',
+        path: '/menu',
     },
     {
         korName: '주문 관리',
-        path: '/orders',
+        path: '/order',
     },
     {
         korName: '주문 내역',
-        path: 'order-historys',
+        path: 'order-history',
     },
     {
         korName: '매출 관리',
-        path: '/sales',
+        path: '/sale',
     }
 ]);
 </script>

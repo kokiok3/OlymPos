@@ -3,7 +3,7 @@
         <div class="input_title">
             {{ props.title }}
         </div>
-        <input type="text" :placeholder="dynamicPlaceholder" @focus="focus" @blur="blur">
+        <input type="text" :placeholder="dynamicPlaceholder" @focus="focus" @blur="blur" @input="changeFocusInput" :value="props.modelValue">
     </div>
 </template>
 
@@ -13,7 +13,12 @@ import { ref } from 'vue';
 const props = defineProps({
     title: String,
     placeholder: String,
+    modelValue: String,
 });
+const emit = defineEmits(['update:modelValue']);
+const changeFocusInput = (event)=>{
+    emit('update:modelValue', event.target.value);
+}
 
 const dynamicPlaceholder = ref(props.placeholder);
 const focus = ()=>{

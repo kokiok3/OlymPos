@@ -26,7 +26,7 @@ import ButtonRectangle from '@/components/buttons/ButtonRectangle.vue';
 
 import Table from '@/components/tables/TableView.vue';
 import ButtonInTable from '@/components/buttons/ButtonInTable.vue';
-import type { ColDef, RowData} from '@/types/TableView';
+import type { ColDef, RowData} from '@/types/TableTypes';
 
 import router from '@/router';
 
