@@ -44,7 +44,9 @@ const nextStep = async()=>{
         const params = {
             user_id: signUp.value.id
         }
-        if(await !isIdDuplicate()){
+
+
+        if(! await isIdDuplicate()){
             signUpStore.setSignUpInfo(params);
             
             router.push({path: '/sign-up/user-pw'});
@@ -54,7 +56,8 @@ const nextStep = async()=>{
 const isIdDuplicate = ()=>{
     return SignUpApi.checkIdDuplicate(signUp.value.id)
     .then(res=>{
-        if(res === 0){
+        const isIdAvailable = res === 0 ? true : false;
+        if(isIdAvailable){
             validateObj.value.isDuplicateId = false;
             return false;
         }

@@ -15,9 +15,7 @@ const LoginApi = {
             return DefaultAxios.post('/admin-login', params)
             .then(res=>{
                 if(res.data.code === 100 && res.data.result === "Success"){
-                    const token = res.data.access_token;
-                    sessionStorage.setItem('access_token', token);
-                    // todo: 홈 화면으로 이동
+                    return res.data.access_token;
                 }
                 else {
                     throw new Error(res.data.code);
