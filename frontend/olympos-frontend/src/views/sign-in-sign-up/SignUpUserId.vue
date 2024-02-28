@@ -44,7 +44,9 @@ const nextStep = async()=>{
         const params = {
             user_id: signUp.value.id
         }
-        if(await !isIdDuplicate()){
+
+
+        if(! await isIdDuplicate()){
             signUpStore.setSignUpInfo(params);
             
             router.push({path: '/sign-up/user-pw'});
