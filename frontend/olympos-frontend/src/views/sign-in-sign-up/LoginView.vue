@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Joi from 'joi';
 import { ref } from 'vue';
+import router from '@/router';
 
 import InputLogin from '@/components/inputs/InputLogin.vue';
 import ValidateMessage from '@/components/validates/ValidateMessage.vue';
@@ -26,13 +27,13 @@ const getCookie = (name='memorizeId')=>{
 }
 getCookie();
 
-const setCookie = ref({
+const cookieInfo = ref({
     cookieName: 'memorizeId',
     cookieValue: false,
     
 })
 const changeCookieSetting = ()=>{
-    setCookie.value.cookieValue = memorizeId.value;
+    cookieInfo.value.cookieValue = memorizeId.value;
 }
 
 
@@ -65,17 +66,25 @@ const login = ()=>{
     }
     else{
         LoginApi.doLogin(loginValue.value)
-        .then(()=>{
-            if(memorizeId.value){
-                const offset = 1000 * 60 * 60 * 9;
-                let date: string | Date = new Date(Date.now() + offset + 86400e3*7);
-                date = date.toUTCString();
-                document.cookie = `${setCookie.value.cookieName}=${setCookie.value.cookieValue}; expires=${date}`;
-            }
-            else {
-                document.cookie = `${setCookie.value.cookieName}=${setCookie.value.cookieValue}; max-age=0`;
-            }
+        .then(res=>{
+            setCookie();
+            
+            const token = res;
+            sessionStorage.setItem('access_token', token);
+            
+            router.push({path: '/store'});
         })
+    }
+}
+const setCookie = ()=>{
+    if(memorizeId.value){
+        const offset = 1000 * 60 * 60 * 9;
+        let date: string | Date = new Date(Date.now() + offset + 86400e3*7);
+        date = date.toUTCString();
+        document.cookie = `${cookieInfo.value.cookieName}=${cookieInfo.value.cookieValue}; expires=${date}`;
+    }
+    else {
+        document.cookie = `${cookieInfo.value.cookieName}=${cookieInfo.value.cookieValue}; max-age=0`;
     }
 }
 </script>

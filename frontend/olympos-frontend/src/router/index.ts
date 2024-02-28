@@ -72,9 +72,16 @@ const router = createRouter({
                     name: 'sales',
                     component: ()=>import('@/views/sales/SalesManagement.vue')
                 },
-            ]
+            ],
+            beforeEnter: (to, from, next)=>{
+                const accessToken = sessionStorage.getItem('access_token');
+                if(!!! accessToken){
+                    next('/login');
+                }
+                console.log('session:', sessionStorage.getItem('access_token'))
+            }
         },
     ]
-})
+});
 
 export default router
