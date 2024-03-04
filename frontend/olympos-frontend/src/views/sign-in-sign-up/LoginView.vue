@@ -67,8 +67,7 @@ const login = ()=>{
     else{
         LoginApi.doLogin(loginValue.value)
         .then(res=>{
-            setCookie();
-            
+            setCookieForMemorizeId();
             const token = res;
             sessionStorage.setItem('access_token', token);
             
@@ -76,7 +75,7 @@ const login = ()=>{
         })
     }
 }
-const setCookie = ()=>{
+const setCookieForMemorizeId = ()=>{
     if(memorizeId.value){
         const offset = 1000 * 60 * 60 * 9;
         let date: string | Date = new Date(Date.now() + offset + 86400e3*7);
