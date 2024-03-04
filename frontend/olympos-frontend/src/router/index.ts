@@ -78,7 +78,9 @@ const router = createRouter({
                 if(!!! accessToken){
                     next('/login');
                 }
-                console.log('session:', sessionStorage.getItem('access_token'))
+                else {
+                    next();
+                }
             }
         },
     ]
