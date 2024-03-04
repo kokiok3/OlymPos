@@ -113,9 +113,9 @@ const createStore = ()=>{
     else {
         const params: createStoreBody = {
             name: formCreateStore.value.storeName as string,
-            owner: formCreateStore.value.storePhoneNumber as string,
+            tel_num: formCreateStore.value.storePhoneNumber as string,
             address: formCreateStore.value.storeAddress as string,
-            tel_num: formCreateStore.value.storeOwner as string,
+            owner: formCreateStore.value.storeOwner as string,
             count: Number(formCreateStore.value.storeTableCnt) as number,
         }
 
