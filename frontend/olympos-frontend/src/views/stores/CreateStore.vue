@@ -120,9 +120,18 @@ const createStore = ()=>{
         }
 
         StoreApi.createStore(params)
-        .then(()=>{
-            router.push('/store');
-            push.success('Something good has been pushed!');
+        .then((res)=>{
+            if(res){
+                push.success({
+                    message: '성공',
+                    onAutoClear() {
+                        router.push('/store');
+                    },
+                    onManualClear() {
+                        router.push('/store');
+                    }
+                });
+            }
         });
     }
 }
