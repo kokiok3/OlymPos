@@ -14,7 +14,7 @@ const props = defineProps({
     type: String,
     title: String,
     placeholder: String,
-    modelValue: String,
+    modelValue: [String, Number],
 });
 const emit = defineEmits(['update:modelValue']);
 const changeFocusInput = (event)=>{
