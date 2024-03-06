@@ -5,3 +5,11 @@ export interface createStoreBody {
     tel_num: string;
     count: number;
 }
+
+export interface FormCreateStore {
+    storeName: string | undefined;
+    storePhoneNumber: string | undefined;
+    storeAddress: string | undefined;
+    storeOwner: string | undefined;
+    storeTableCnt: number | undefined;
+}
