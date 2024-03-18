@@ -13,3 +13,7 @@ export interface FormCreateStore {
     storeOwner: string | undefined;
     storeTableCnt: number | undefined;
 }
+
+export interface StoreInfo {
+    store_uid: number;
+}
