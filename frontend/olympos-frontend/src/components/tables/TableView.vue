@@ -13,7 +13,7 @@
                             {{ index + 1 }}
                         </template>
 
-                        <component v-else-if="header.extend === true" :is="item[header.value].component">
+                        <component v-else-if="header.extend === true" :is="item[header.value].component" @click="clickBtn(item[header.value].slot, item.unique_store_info)">
                             <slot>{{item[header.value].slot}}</slot>
                         </component>
                         
@@ -28,10 +28,37 @@
 </template>
 
 <script setup lang="ts">
+import StoreApi from '@/apis/StoreApi';
+
 const props = defineProps({
     colDef: Object,
     rowData: Object
 })
+
+const clickBtn = (btnType: string, storeId: number)=>{
+    console.log('clickBtn', btnType);
+    if(btnType === '수정'){
+        handleEdit(storeId);
+    }
+    else {
+        //todo 삭제 얼럿
+        handleDelete(storeId);
+    }
+}
+
+const handleEdit = (storeId: number)=>{
+    
+}
+const handleDelete = (storeId: number)=>{
+    const params = {
+        store_uid: storeId
+    }
+    StoreApi.deleteStoreList(params)
+    .then(res=>{
+        console.log(res);
+        //todo 목록 재조회
+    })
+}
 </script>
 
 <style scoped>
