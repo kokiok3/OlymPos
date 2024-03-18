@@ -25,6 +25,27 @@ const StoreApi = {
                 message: API_CODE[error.message],
             });
         })
+    },
+    getStoreList(){
+        return DefaultAxios.get('/get-my-stores', {
+            headers: {
+                Authorization: ACCESS_TOKEN()
+            }
+        })
+        .then(res=>{
+            if(res.data.code === 100 && res.data.result === "Success"){
+                return res.data.stores;
+            }
+            else {
+                throw new Error(res.data.code);
+            }
+        })
+        .catch(error=>{
+            push.error({
+                title: '에러',
+                message: API_CODE[error.message],
+            });
+        })
     }
 }
 export default StoreApi;
