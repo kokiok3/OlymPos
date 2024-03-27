@@ -55,7 +55,7 @@ const tableHeader: ColDef[] = [
     { header: '번호', value: 'number', ratio: 1 },
     { header: '매장명', value: 'store_name', ratio: 5 },
     { header: '매장 전화번호', value: 'store_tel_number', ratio: 5 },
-    { header: '주소', value: 'store_addres', ratio: 5 },
+    { header: '주소', value: 'store_address', ratio: 5 },
     { header: '사장님 성함', value: 'store_owner', ratio: 5 },
     { header: '테이블 개수', value: 'table_count', ratio: 5 },
     { header: '수정', value: 'edit', ratio: 2, extend: true },
