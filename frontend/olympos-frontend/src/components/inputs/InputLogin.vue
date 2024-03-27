@@ -23,7 +23,7 @@ const changeFocusInput = (event)=>{
 <template>
     <div class="input-wrapper" @click="focusInput">
         <input :type="inputLogin.type" ref="inputRef" @input="changeFocusInput" :value="inputLogin.modelValue">
-        <span class="input-placeholder" :class="[{'focus-placeholder': isFocused}]">{{ inputLogin.placeholder }}</span>
+        <span class="input-placeholder" :class="[{'focus-placeholder': modelValue || isFocused}]">{{ inputLogin.placeholder }}</span>
     </div>
 </template>
 
