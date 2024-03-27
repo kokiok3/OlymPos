@@ -15,13 +15,19 @@ import ButtonBig from '@/components/buttons/ButtonBig.vue';
 
 import LoginApi from '@/apis/LoginApi'
 
+const loginValue = ref({
+    userId: '',
+    userPw: ''
+});
 const memorizeId = ref(false);
 const getCookie = (name='memorizeId')=>{
     const matches = document.cookie.match(new RegExp(
         "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
     ));
-    if(matches && matches[1] === 'true'){
+    
+    if(matches){
         memorizeId.value = true;
+        loginValue.value.userId = matches[1];
     }
     else {
         memorizeId.value = false;
@@ -31,13 +37,23 @@ getCookie();
 
 const cookieInfo = ref({
     cookieName: 'memorizeId',
-    cookieValue: false,
+    cookieValue: '',
     
 })
 const changeCookieSetting = ()=>{
-    cookieInfo.value.cookieValue = memorizeId.value;
+    cookieInfo.value.cookieValue = loginValue.value.userId;
 }
-
+const setCookieForMemorizeId = ()=>{
+    if(memorizeId.value){
+        const offset = 1000 * 60 * 60 * 9;
+        let date: string | Date = new Date(Date.now() + offset + 86400e3*7);
+        date = date.toUTCString();
+        document.cookie = `${cookieInfo.value.cookieName}=${cookieInfo.value.cookieValue}; expires=${date}`;
+    }
+    else {
+        document.cookie = `${cookieInfo.value.cookieName}=${cookieInfo.value.cookieValue}; max-age=0`;
+    }
+}
 
 const schema = Joi.object({
     isErrorLoginId: Joi.string().required(),
@@ -51,10 +67,6 @@ const validate = ()=>{
     return schema.validate({isErrorLoginId: loginValue.value.userId, isErrorLoginPw: loginValue.value.userPw}, {abortEarly: false});
 }
 
-const loginValue = ref({
-    userId: '',
-    userPw: ''
-});
 const login = ()=>{
     initValidateObj(validateObj.value);
 
@@ -70,24 +82,17 @@ const login = ()=>{
         LoginApi.doLogin(loginValue.value)
         .then(res=>{
             if(res?.accessToken){
-                setCookieForMemorizeId();
+                if(memorizeId.value){
+                    changeCookieSetting()
+                    setCookieForMemorizeId();
+                }
+
                 const token = res.accessToken;
                 sessionStorage.setItem('access_token', token);
                 
                 router.push({path: '/store'});
             }
         })
-    }
-}
-const setCookieForMemorizeId = ()=>{
-    if(memorizeId.value){
-        const offset = 1000 * 60 * 60 * 9;
-        let date: string | Date = new Date(Date.now() + offset + 86400e3*7);
-        date = date.toUTCString();
-        document.cookie = `${cookieInfo.value.cookieName}=${cookieInfo.value.cookieValue}; expires=${date}`;
-    }
-    else {
-        document.cookie = `${cookieInfo.value.cookieName}=${cookieInfo.value.cookieValue}; max-age=0`;
     }
 }
 
@@ -119,7 +124,7 @@ onUnmounted(()=>{
                     </div>
                 </form>
                 <div class="memorize-id">
-                    <input type="checkbox" id="memorize-id" v-model="memorizeId" @change="changeCookieSetting">
+                    <input type="checkbox" id="memorize-id" v-model="memorizeId">
                     <label for="memorize-id">아이디 저장</label>
                 </div>
                 <ButtonBig @click="login">로그인</ButtonBig>
