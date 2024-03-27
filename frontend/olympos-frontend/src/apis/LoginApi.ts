@@ -1,4 +1,6 @@
 import DefaultAxios from '@/apis/DefaultApi'
+import { push } from 'notivue';
+import { API_CODE } from '@/constants/ApiCodeConstant';
 
 interface LoginValue {
     userId: string;
@@ -7,6 +9,11 @@ interface LoginValue {
 
 const LoginApi = {
     doLogin(args: LoginValue){
+        const notification = push.promise({
+            title: '로그인 중...',
+            duration: undefined
+        });
+
         const params = {
             user_id: args.userId,
             user_pwd: args.userPw
@@ -14,15 +21,17 @@ const LoginApi = {
         return DefaultAxios.post('/admin-login', params)
         .then(res=>{
             if(res.data.code === 100 && res.data.result === "Success"){
-                return res.data.access_token;
+                return {accessToken: res.data.access_token};
             }
             else {
                 throw new Error(res.data.code);
             }
         })
         .catch(error=>{
-            // todo: console.log대신 오류 메세지 창 생성하기
-            console.log('err: ', error.message);
+            notification.reject({
+                title: API_CODE[error.message],
+                duration: undefined
+            });
         });
     }
 }

@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import Joi from 'joi';
-import { ref } from 'vue';
+import { ref, onUnmounted } from 'vue';
 import router from '@/router';
+import { Notivue, Notification, push } from 'notivue';
+
 
 import InputLogin from '@/components/inputs/InputLogin.vue';
 import ValidateMessage from '@/components/validates/ValidateMessage.vue';
@@ -67,11 +69,13 @@ const login = ()=>{
     else{
         LoginApi.doLogin(loginValue.value)
         .then(res=>{
-            setCookieForMemorizeId();
-            const token = res;
-            sessionStorage.setItem('access_token', token);
-            
-            router.push({path: '/store'});
+            if(res?.accessToken){
+                setCookieForMemorizeId();
+                const token = res.accessToken;
+                sessionStorage.setItem('access_token', token);
+                
+                router.push({path: '/store'});
+            }
         })
     }
 }
@@ -86,10 +90,18 @@ const setCookieForMemorizeId = ()=>{
         document.cookie = `${cookieInfo.value.cookieName}=${cookieInfo.value.cookieValue}; max-age=0`;
     }
 }
+
+onUnmounted(()=>{
+    push.destroyAll();
+});
 </script>
 
 <template>
     <main>
+        <Notivue v-slot="item">
+            <Notification :item="item" />
+        </Notivue>
+
         <div class="login-wrapper">
             <LogoText />
             
