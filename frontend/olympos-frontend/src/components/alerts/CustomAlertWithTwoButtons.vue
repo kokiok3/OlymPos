@@ -24,7 +24,6 @@ defineProps<{
             adding role + aria-live on the text container -->
             <p :role="item.ariaRole" :aria-live="item.ariaLive" class="title">
                 {{ item.title }}
-                {{ item.props }}
             </p>
             <p :role="item.ariaRole" :aria-live="item.ariaLive" class="message" v-html="item.message">
             </p>
