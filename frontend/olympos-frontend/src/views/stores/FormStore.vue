@@ -33,7 +33,7 @@
 
         <template #btnArea>
             <ManagementButton :btnColor="'white'" @click="cancelForm">취소</ManagementButton>
-            <ManagementButton :btnColor="'blue'" @click="createStore">매장 {{ modeText }}</ManagementButton>
+            <ManagementButton :btnColor="'blue'" @click="handleStore">매장 {{ modeText }}</ManagementButton>
         </template>
     </ManagementView>
 </template>
@@ -57,14 +57,31 @@ import { Notivue, Notification, push } from 'notivue';
 
 const route = useRoute();
 
+const isEditMode = Number(route.params.storeId);
 const modeText = ref('추가');
+const getStoreInfo = ()=>{
+    const params = {
+        store_uid: Number(route.params.storeId)
+    }
+    StoreApi.getStoreInfo(params)
+    .then(res=>{
+        formCreateStore.value.storeName = res.store_name;
+        formCreateStore.value.storePhoneNumber = res.store_tel_number;
+        formCreateStore.value.storeAddress = res.store_address;
+        formCreateStore.value.storeOwner = res.store_owner;
+        formCreateStore.value.storeTableCnt = res.table_count;
+    })
+    .catch(err=>{
+        push.error({
+            title: '에러',
+            message: err.message || 'server error',
+        });
+    });
+}
 const setMode = ()=>{
-    const isEditMode = Number(route.params.storeId);
     if(isEditMode){
         modeText.value = '수정';
-    }
-    else {
-        alert('추가')
+        getStoreInfo();
     }
 }
 setMode();
@@ -127,13 +144,11 @@ const formCreateStore: Ref<FormStore> = ref({
 const cancelForm = ()=>{
     router.push('/store');
 }
-const createStore = ()=>{
+const handleStore = ()=>{
     initValidateObj2(validateObj.value);
 
     const validateResult = validate();
     if(validateResult.error){
-        console.log(validateResult)
-
         validateResult.error.details.forEach(element => {
             const extractType = ()=>{
                 const typeArr = element.type.split('.');
@@ -156,21 +171,54 @@ const createStore = ()=>{
             count: Number(formCreateStore.value.storeTableCnt) as number,
         }
 
-        StoreApi.createStore(params)
-        .then((res)=>{
-            if(res){
-                push.success({
-                    message: '성공',
-                    onAutoClear() {
-                        router.push('/store');
-                    },
-                    onManualClear() {
-                        router.push('/store');
-                    }
-                });
+        if(isEditMode){
+            params.store_uid = isEditMode;
+            editStore(params);
+        }
+        else {
+            createStore(params);
+        }
+    }
+}
+const createStore = (params: FormStoreBody)=>{
+    StoreApi.createStore(params)
+    .then(()=>{
+        push.success({
+            message: '성공',
+            onAutoClear() {
+                router.push('/store');
+            },
+            onManualClear() {
+                router.push('/store');
             }
         });
-    }
+    })
+    .catch(err=>{
+        push.error({
+            title: '에러',
+            message: err.message || 'server error',
+        });
+    });
+}
+const editStore = (params: FormStoreBody)=>{
+    StoreApi.editStoreInfo(params)
+    .then(()=>{
+        push.success({
+            message: '수정 완료',
+            onAutoClear() {
+                router.push('/store');
+            },
+            onManualClear() {
+                router.push('/store');
+            }
+        });
+    })
+    .catch(err=>{
+        push.error({
+            title: '에러',
+            message: err.message || 'server error',
+        });
+    });
 }
 </script>
 

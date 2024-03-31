@@ -1,4 +1,5 @@
 export interface FormStoreBody {
+    store_uid?: number;
     name: string;
     owner: string;
     address: string;

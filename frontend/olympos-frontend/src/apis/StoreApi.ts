@@ -35,16 +35,22 @@ const StoreApi = {
         .then(res=>{
             if(res.data.code === 100 && res.data.result === "Success"){
                 return res.data.stores;
+    editStoreInfo(params: FormStoreBody){
+        return DefaultAxios.post('/change-store-info', params, {
+            headers: {
+                Authorization: ACCESS_TOKEN()
+            }
+        })
+        .then(res=>{
+            if(res.data.code === 100 && res.data.result === "Success"){
+                return;
             }
             else {
                 throw new Error(res.data.code);
             }
         })
         .catch(error=>{
-            push.error({
-                title: '에러',
-                message: API_CODE[error.message],
-            });
+            throw new Error(API_CODE[error.message]);
         })
     },
     deleteStoreList(params: StoreInfo){
