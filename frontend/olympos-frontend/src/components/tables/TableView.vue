@@ -1,8 +1,16 @@
 <template>
     <div>
-        <Notivue v-slot="item">
-            <CustomAlertWithTwoButtons :item="item as NotivueItem<CustomAlertWithTwoButtonsProps>" />
-        </Notivue>
+        <template v-if="displayOnCustomAlert">
+            <Notivue v-slot="item">
+                <CustomAlertWithTwoButtons :item="item as NotivueItem<CustomAlertWithTwoButtonsProps>" />
+            </Notivue>
+        </template>
+
+        <template v-else>
+            <Notivue v-slot="item">
+                <Notification :item="item" />
+            </Notivue>
+        </template>
 
         <table>
             <thead>
@@ -32,10 +40,10 @@
 </template>
 
 <script setup lang="ts">
-import { onUnmounted } from 'vue';
+import { ref, onUnmounted } from 'vue';
 import StoreApi from '@/apis/StoreApi';
 import router from '@/router';
-import { Notivue, push } from 'notivue';
+import { Notivue, Notification, push } from 'notivue';
 import type { NotivueItem } from 'notivue';
 import CustomAlertWithTwoButtons, { type CustomAlertWithTwoButtonsProps } from '@/components/alerts/CustomAlertWithTwoButtons.vue';
 
@@ -44,12 +52,13 @@ const props = defineProps({
     rowData: Object
 })
 const emit = defineEmits(['refresh']);
-
+const displayOnCustomAlert = ref(false);
 const clickBtn = (btnType: string, storeId: number)=>{
     if(btnType === '수정'){
         handleEdit(storeId);
     }
     else{
+        displayOnCustomAlert.value = true;
         handleDelete(storeId);
     }
 }
@@ -61,19 +70,26 @@ const handleEdit = (storeId: number)=>{
     goFormStore(storeId);
 }
 
-const clearAlert = ()=>{
-    push.clearAll();
+const destroyAlert = ()=>{
+    push.destroyAll();
+    displayOnCustomAlert.value = false;
 }
 const deleteStore = (storeId: number)=>{
-    clearAlert();
+    destroyAlert();
 
     const params = {
         store_uid: storeId
     }
-    StoreApi.deleteStoreList(params)
+    StoreApi.deleteStoreInfo(params)
     .then(()=>{
         emit('refresh');
-    });
+    })
+    .catch(err=>{
+        push.error({
+            title: '에러',
+            message: err.message || 'server error',
+        });
+    })
 }
 const handleDelete = (storeId: number)=>{
     push.warning<CustomAlertWithTwoButtonsProps>({
@@ -84,7 +100,7 @@ const handleDelete = (storeId: number)=>{
             iconColor: 'var(--main-error-1)',
             btn1: '취소',
             btn2: '확인',
-            btn1Function: clearAlert,
+            btn1Function: destroyAlert,
             btn2Function: deleteStore.bind(null, storeId),
         },
         duration: undefined

@@ -5,27 +5,6 @@ import { push } from 'notivue';
 import { API_CODE } from '@/constants/ApiCodeConstant';
 
 const StoreApi = {
-    createStore(params: FormStoreBody){
-        return DefaultAxios.post('/add-store', params, {
-            headers: {
-                Authorization: ACCESS_TOKEN()
-            }
-        })
-        .then(res=>{
-            if(res.data.code === 100 && res.data.result === "Success"){
-                return true;
-            }
-            else {
-                throw new Error(res.data.code);
-            }
-        })
-        .catch(error=>{
-            push.error({
-                title: '에러',
-                message: API_CODE[error.message],
-            });
-        })
-    },
     getStoreList(){
         return DefaultAxios.get('/get-my-stores', {
             headers: {
@@ -35,6 +14,52 @@ const StoreApi = {
         .then(res=>{
             if(res.data.code === 100 && res.data.result === "Success"){
                 return res.data.stores;
+            }
+            else {
+                throw new Error(res.data.code);
+            }
+        })
+        .catch(error=>{
+            throw new Error(API_CODE[error.message]);
+        })
+    },
+    createStore(params: FormStoreBody){
+        return DefaultAxios.post('/add-store', params, {
+            headers: {
+                Authorization: ACCESS_TOKEN()
+            }
+        })
+        .then(res=>{
+            if(res.data.code === 100 && res.data.result === "Success"){
+                return;
+            }
+            else {
+                throw new Error(res.data.code);
+            }
+        })
+        .catch(error=>{
+            throw new Error(API_CODE[error.message]);
+        })
+    },
+    getStoreInfo(params: StoreInfo){
+        return DefaultAxios.get('/get-store-info', {
+            params: params,
+            headers: {
+                Authorization: ACCESS_TOKEN()
+            }
+        })
+        .then(res=>{
+            if(res.data.code === 100 && res.data.result === "Success"){
+                return res.data.store;
+            }
+            else {
+                throw new Error(res.data.code);
+            }
+        })
+        .catch(error=>{
+            throw new Error(API_CODE[error.message]);
+        })
+    },
     editStoreInfo(params: FormStoreBody){
         return DefaultAxios.post('/change-store-info', params, {
             headers: {
@@ -53,7 +78,7 @@ const StoreApi = {
             throw new Error(API_CODE[error.message]);
         })
     },
-    deleteStoreList(params: StoreInfo){
+    deleteStoreInfo(params: StoreInfo){
         return DefaultAxios.post('/delete-store', params, {
             headers: {
                 Authorization: ACCESS_TOKEN()
@@ -68,10 +93,7 @@ const StoreApi = {
             }
         })
         .catch(error=>{
-            push.error({
-                title: '에러',
-                message: API_CODE[error.message],
-            });
+            throw new Error(API_CODE[error.message]);
         })
     }
 }

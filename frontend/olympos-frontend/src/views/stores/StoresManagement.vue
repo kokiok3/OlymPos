@@ -1,5 +1,9 @@
 <template>
     <div class="store_content">
+        <Notivue v-slot="item">
+            <Notification :item="item" />
+        </Notivue>
+        
         <ImageSlider />
         <div class="store_wrapper">
             <ContentView>
@@ -23,6 +27,8 @@
 <script setup lang="ts">
 import { ref, type Ref } from 'vue';
 import { type AxiosResponse } from 'axios';
+
+import { Notivue, Notification, push } from 'notivue';
 
 import ImageSlider from '@/views/stores/ImageSlider.vue';
 import ContentView from '@/components/contents/ContentView.vue';
@@ -54,6 +60,12 @@ const getStoreList = ()=>{
     
             rowData.value = markRaw(result);
         }
+    })
+    .catch(err=>{
+        push.error({
+            title: '에러',
+            message: err.message || 'server error',
+        });
     });
 }
 getStoreList();
