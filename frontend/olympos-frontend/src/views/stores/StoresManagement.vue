@@ -73,7 +73,7 @@ const rowData: Ref<RowData<typeof ButtonInTable>[]> = ref([]);
 
 
 const goCreateStore = ()=>{
-    router.push('/store/create');
+    router.push('/store/form');
 }
 </script>
 
