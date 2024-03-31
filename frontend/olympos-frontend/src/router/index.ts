@@ -49,8 +49,8 @@ const router = createRouter({
                     component: ()=>import('@/views/stores/StoresManagement.vue')
                 },
                 {
-                    path: '/store/create',
-                    component: ()=>import('@/views/stores/CreateStore.vue')
+                    path: '/store/form/:storeId?',
+                    component: ()=>import('@/views/stores/FormStore.vue')
                 },
                 {
                     path: '/menu',
