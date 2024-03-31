@@ -49,7 +49,7 @@ const router = createRouter({
                     component: ()=>import('@/views/stores/StoresManagement.vue')
                 },
                 {
-                    path: '/store/form',
+                    path: '/store/form/:storeId?',
                     component: ()=>import('@/views/stores/FormStore.vue')
                 },
                 {

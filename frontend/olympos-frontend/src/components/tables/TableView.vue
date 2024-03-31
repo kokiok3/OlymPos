@@ -34,6 +34,7 @@
 <script setup lang="ts">
 import { onUnmounted } from 'vue';
 import StoreApi from '@/apis/StoreApi';
+import router from '@/router';
 import { Notivue, push } from 'notivue';
 import type { NotivueItem } from 'notivue';
 import CustomAlertWithTwoButtons, { type CustomAlertWithTwoButtonsProps } from '@/components/alerts/CustomAlertWithTwoButtons.vue';
@@ -45,7 +46,6 @@ const props = defineProps({
 const emit = defineEmits(['refresh']);
 
 const clickBtn = (btnType: string, storeId: number)=>{
-    console.log('clickBtn', btnType);
     if(btnType === '수정'){
         handleEdit(storeId);
     }
@@ -54,8 +54,15 @@ const clickBtn = (btnType: string, storeId: number)=>{
     }
 }
 
+const goFormStore = (storeId: number)=>{
+    router.push(`/store/form/${storeId}`);
+}
 const handleEdit = (storeId: number)=>{
-    
+    goFormStore(storeId);
+}
+
+const clearAlert = ()=>{
+    push.clearAll();
 }
 const deleteStore = (storeId: number)=>{
     clearAlert();
