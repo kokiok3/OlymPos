@@ -1,11 +1,11 @@
 import DefaultAxios from '@/apis/DefaultApi';
-import { type createStoreBody, type StoreInfo } from '@/types/StoreTypes';
+import { type FormStoreBody, type StoreInfo } from '@/types/StoreTypes';
 import { ACCESS_TOKEN } from '@/functions/AccessToken';
 import { push } from 'notivue';
 import { API_CODE } from '@/constants/ApiCodeConstant';
 
 const StoreApi = {
-    createStore(params: createStoreBody){
+    createStore(params: FormStoreBody){
         return DefaultAxios.post('/add-store', params, {
             headers: {
                 Authorization: ACCESS_TOKEN()

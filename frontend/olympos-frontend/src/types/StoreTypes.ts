@@ -1,4 +1,4 @@
-export interface createStoreBody {
+export interface FormStoreBody {
     name: string;
     owner: string;
     address: string;
@@ -6,7 +6,7 @@ export interface createStoreBody {
     count: number;
 }
 
-export interface FormCreateStore {
+export interface FormStore {
     storeName: string | undefined;
     storePhoneNumber: string | undefined;
     storeAddress: string | undefined;

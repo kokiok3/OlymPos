@@ -52,7 +52,7 @@ import router from '@/router';
 import { useRoute } from 'vue-router'
 
 import StoreApi from '@/apis/StoreApi';
-import { type createStoreBody, type FormCreateStore } from '@/types/StoreTypes';
+import { type FormStoreBody, type FormStore } from '@/types/StoreTypes';
 import { Notivue, Notification, push } from 'notivue';
 
 const route = useRoute();
@@ -117,7 +117,7 @@ const validate = ()=>{
     );
 }
 
-const formCreateStore: Ref<FormCreateStore> = ref({
+const formCreateStore: Ref<FormStore> = ref({
     storeName: undefined,
     storePhoneNumber: undefined,
     storeAddress: undefined,
@@ -148,7 +148,7 @@ const createStore = ()=>{
         });
     }
     else {
-        const params: createStoreBody = {
+        const params: FormStoreBody = {
             name: formCreateStore.value.storeName as string,
             tel_num: formCreateStore.value.storePhoneNumber as string,
             address: formCreateStore.value.storeAddress as string,
