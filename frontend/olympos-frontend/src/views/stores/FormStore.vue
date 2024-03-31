@@ -1,7 +1,7 @@
 <template>
     <ManagementView>
         <template #title>
-            매장 추가
+            매장 {{ modeText }}
         </template>
 
         <template #form>
@@ -32,8 +32,8 @@
         </template>
 
         <template #btnArea>
-            <ManagementButton :btnColor="'white'" @click="cancelCreate">취소</ManagementButton>
-            <ManagementButton :btnColor="'blue'" @click="createStore">매장 등록</ManagementButton>
+            <ManagementButton :btnColor="'white'" @click="cancelForm">취소</ManagementButton>
+            <ManagementButton :btnColor="'blue'" @click="createStore">매장 {{ modeText }}</ManagementButton>
         </template>
     </ManagementView>
 </template>
@@ -49,10 +49,26 @@ import { newValidateObj2, initValidateObj2, errorMsg } from '@/validations/Valid
 
 import { ref, type Ref } from 'vue';
 import router from '@/router';
+import { useRoute } from 'vue-router'
 
 import StoreApi from '@/apis/StoreApi';
 import { type createStoreBody, type FormCreateStore } from '@/types/StoreTypes';
 import { Notivue, Notification, push } from 'notivue';
+
+const route = useRoute();
+
+const modeText = ref('추가');
+const setMode = ()=>{
+    const isEditMode = Number(route.params.storeId);
+    if(isEditMode){
+        modeText.value = '수정';
+    }
+    else {
+        alert('추가')
+    }
+}
+setMode();
+
 
 const schema = Joi.object({
     isErrorStoreName: Joi.string().min(1).max(64).required(),
@@ -108,7 +124,7 @@ const formCreateStore: Ref<FormCreateStore> = ref({
     storeOwner: undefined,
     storeTableCnt: undefined
 });
-const cancelCreate = ()=>{
+const cancelForm = ()=>{
     router.push('/store');
 }
 const createStore = ()=>{
