@@ -13,6 +13,7 @@
 
                 <template #table>
                     <Table :col-def="tableHeader" :row-data="rowData"></Table>
+                    <EmptyTableView v-if="rowData.length === 0" />
                 </template>
             </ContentView>
         </div>
@@ -28,6 +29,7 @@ import ContentView from '@/components/contents/ContentView.vue';
 import ButtonRectangle from '@/components/buttons/ButtonRectangle.vue';
 
 import Table from '@/components/tables/TableView.vue';
+import EmptyTableView from '@/components/tables/EmptyTableView.vue';
 import ButtonInTable from '@/components/buttons/ButtonInTable.vue';
 import type { ColDef, RowData} from '@/types/TableTypes';
 
@@ -38,15 +40,20 @@ import { markRaw } from 'vue';
 const getStoreList = ()=>{
     StoreApi.getStoreList()
     .then(res=>{
-        const extendRow = {
-            edit: {component: ButtonInTable, slot: '수정'},
-            delete: {component: ButtonInTable, slot: '삭제'},
+        if(res.length === 0){
+            rowData.value = res;
         }
-        const result = res.map((e: AxiosResponse)=>{
-            return Object.assign(e, extendRow);
-        })
-
-        rowData.value = markRaw(result);
+        else {
+            const extendRow = {
+                edit: {component: ButtonInTable, slot: '수정'},
+                delete: {component: ButtonInTable, slot: '삭제'},
+            }
+            const result = res.map((e: AxiosResponse)=>{
+                return Object.assign(e, extendRow);
+            });
+    
+            rowData.value = markRaw(result);
+        }
     });
 }
 getStoreList();
