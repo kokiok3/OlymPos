@@ -12,7 +12,7 @@
                 </template>
 
                 <template #table>
-                    <Table :col-def="tableHeader" :row-data="rowData"></Table>
+                    <Table :col-def="tableHeader" :row-data="rowData" @refresh="getStoreList"></Table>
                     <EmptyTableView v-if="rowData.length === 0" />
                 </template>
             </ContentView>
