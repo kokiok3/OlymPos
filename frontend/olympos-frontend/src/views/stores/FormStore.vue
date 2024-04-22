@@ -33,7 +33,7 @@
 
         <template #btnArea>
             <ManagementButton :btnColor="'white'" @click="cancelForm">취소</ManagementButton>
-            <ManagementButton :btnColor="'blue'" @click="handleStore">매장 {{ modeText }}</ManagementButton>
+            <ManagementButton :btnColor="'blue'" @click.once="handleStore" :key="buttonKey">매장 {{ modeText }}</ManagementButton>
         </template>
     </ManagementView>
 </template>
@@ -144,11 +144,17 @@ const formCreateStore: Ref<FormStore> = ref({
 const cancelForm = ()=>{
     router.push('/store');
 }
+const buttonKey = ref(0);
+const increaseButtonKey = () => {
+    buttonKey.value++;
+}
 const handleStore = ()=>{
     initValidateObj2(validateObj.value);
 
     const validateResult = validate();
     if(validateResult.error){
+        increaseButtonKey();
+
         validateResult.error.details.forEach(element => {
             const extractType = ()=>{
                 const typeArr = element.type.split('.');
@@ -187,9 +193,11 @@ const createStore = (params: FormStoreBody)=>{
             message: '성공',
             onAutoClear() {
                 router.push('/store');
+                increaseButtonKey();
             },
             onManualClear() {
                 router.push('/store');
+                increaseButtonKey();
             }
         });
     })
@@ -198,6 +206,8 @@ const createStore = (params: FormStoreBody)=>{
             title: '에러',
             message: err.message || 'server error',
         });
+
+        increaseButtonKey();
     });
 }
 const editStore = (params: FormStoreBody)=>{
@@ -207,9 +217,11 @@ const editStore = (params: FormStoreBody)=>{
             message: '수정 완료',
             onAutoClear() {
                 router.push('/store');
+                increaseButtonKey();
             },
             onManualClear() {
                 router.push('/store');
+                increaseButtonKey();
             }
         });
     })
@@ -218,6 +230,8 @@ const editStore = (params: FormStoreBody)=>{
             title: '에러',
             message: err.message || 'server error',
         });
+
+        increaseButtonKey();
     });
 }
 </script>
