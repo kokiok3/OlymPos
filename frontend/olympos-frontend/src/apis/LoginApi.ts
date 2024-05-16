@@ -29,7 +29,7 @@ const LoginApi = {
         })
         .catch(error=>{
             notification.reject({
-                title: API_CODE[error.message],
+                title: API_CODE[error.message] || '로그인 실패',
                 duration: undefined
             });
         });
