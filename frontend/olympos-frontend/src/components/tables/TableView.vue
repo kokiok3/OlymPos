@@ -25,7 +25,7 @@
                             {{ index + 1 }}
                         </template>
 
-                        <component v-else-if="header.extend === true" :is="item[header.value].component" @click="buttonFunction(item[header.value].slot, item, emit)">
+                        <component v-else-if="header.extend === true" :is="item[header.value].component" @click="buttonFunction?.(item[header.value].slot, item, emit)">
                             <slot>{{item[header.value].slot}}</slot>
                         </component>
                         

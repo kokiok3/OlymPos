@@ -1,14 +1,15 @@
-import { ref, onUnmounted, defineEmits, } from 'vue';
 import StoreApi from '@/apis/StoreApi';
 import router from '@/router';
-import { Notivue, Notification, push } from 'notivue';
-import CustomAlertWithTwoButtons, { type CustomAlertWithTwoButtonsProps } from '@/components/alerts/CustomAlertWithTwoButtons.vue';
+import { push } from 'notivue';
+import { type CustomAlertWithTwoButtonsProps } from '@/components/alerts/CustomAlertWithTwoButtons.vue';
 import {useTableViewStore} from '@/stores/TableViewStore';
 const tableViewStore = useTableViewStore();
+import type {RowData} from '@/types/TableTypes';
 
 
-export function useButton(btnType: string, storeItem: object, emit) {
+export function useButton(btnType: string, storeItem: RowData<null>, emit: Function) {
 
+    // 수정 로직
     const goFormStore = (storeId: number)=>{
         router.push(`/store/form/${storeId}`);
     }
@@ -16,6 +17,8 @@ export function useButton(btnType: string, storeItem: object, emit) {
         goFormStore(storeId);
     }
     
+
+    // 삭제 로직
     const destroyAlert = ()=>{
         push.destroyAll();
         tableViewStore.setCustomAlertState(false);
@@ -58,10 +61,10 @@ export function useButton(btnType: string, storeItem: object, emit) {
 
 
     if(btnType === '수정'){
-        handleEdit(storeItem.unique_store_info);
+        handleEdit(storeItem.unique_store_info as number);
     }
     else{
         tableViewStore.setCustomAlertState(true);
-        handleDelete(storeItem.unique_store_info);
+        handleDelete(storeItem.unique_store_info as number);
     }
 }
