@@ -1,5 +1,5 @@
 import DefaultAxios from '@/apis/DefaultApi';
-import { type FormStoreBody, type StoreInfo } from '@/types/StoreTypes';
+import { type FormStoreBody, type StoreId } from '@/types/StoreTypes';
 import { ACCESS_TOKEN } from '@/functions/AccessToken';
 import { push } from 'notivue';
 import { API_CODE } from '@/constants/ApiCodeConstant';
@@ -41,7 +41,7 @@ const StoreApi = {
             throw new Error(API_CODE[error.message]);
         })
     },
-    getStoreInfo(params: StoreInfo){
+    getStoreInfo(params: StoreId){
         return DefaultAxios.get('/get-store-info', {
             params: params,
             headers: {
@@ -78,7 +78,7 @@ const StoreApi = {
             throw new Error(API_CODE[error.message]);
         })
     },
-    deleteStoreInfo(params: StoreInfo){
+    deleteStoreInfo(params: StoreId){
         return DefaultAxios.post('/delete-store', params, {
             headers: {
                 Authorization: ACCESS_TOKEN()
