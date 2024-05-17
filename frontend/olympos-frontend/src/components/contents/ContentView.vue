@@ -1,14 +1,14 @@
 <template>
     <div>
         <ContentTitle class="content_title"><slot name="title"></slot></ContentTitle>
-        <ContentButtonArea class="content_btn_area"><slot name="buttonArea"></slot></ContentButtonArea>
+        <ContentControlArea class="content_btn_area"><slot name="controlArea"></slot></ContentControlArea>
         <ContentTable><slot name="table"></slot></ContentTable>
     </div>
 </template>
 
 <script setup lang="ts">
 import ContentTitle from '@/components/contents/ContentTitle.vue';
-import ContentButtonArea from '@/components/contents/ContentButtonArea.vue';
+import ContentControlArea from '@/components/contents/ContentControlArea.vue';
 import ContentTable from '@/components/contents/ContentTable.vue';
 
 </script>
