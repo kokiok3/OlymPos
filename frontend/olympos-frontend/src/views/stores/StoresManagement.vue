@@ -11,7 +11,7 @@
                     매장 관리
                 </template>
 
-                <template #buttonArea>
+                <template #controlArea>
                     <ButtonRectangle @click="goCreateStore">매장 추가</ButtonRectangle>
                 </template>
 

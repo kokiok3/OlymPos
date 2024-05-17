@@ -15,6 +15,11 @@ export interface FormStore {
     storeTableCnt: number | undefined;
 }
 
-export interface StoreInfo {
+export interface StoreId {
     store_uid: number;
+}
+
+export interface StoreInfo {
+    storeId: number;
+    storeName: String;
 }
