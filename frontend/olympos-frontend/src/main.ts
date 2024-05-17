@@ -9,6 +9,7 @@ import 'notivue/animations.css'
 
 import App from './App.vue'
 import router from './router'
+import moment from 'moment'
 
 const notivue = createNotivue({
     position: 'top-center',
@@ -21,6 +22,18 @@ const notivue = createNotivue({
     }
 })
 const app = createApp(App)
+
+/**
+* @params {date} date to be converted to timeFormatter
+* @returns returns timeFormatter
+*/
+const momentLib = {
+    format: (date: Date):string=>{
+        return moment(date).format("YYYY-MM-DD HH:mm:ss");
+    }
+}
+app.config.globalProperties.$momentLib = momentLib;
+app.provide('momentLib', momentLib)
 
 app.use(createPinia())
 app.use(router)
