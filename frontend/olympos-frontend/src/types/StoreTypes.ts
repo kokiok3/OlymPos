@@ -18,4 +18,8 @@ export interface FormStore {
 export interface StoreId {
     store_uid: number;
 }
+
+export interface StoreInfo {
+    storeId: number;
+    storeName: String;
 }
