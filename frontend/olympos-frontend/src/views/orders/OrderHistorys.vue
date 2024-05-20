@@ -18,7 +18,7 @@
                 </template>
 
                 <template #table>
-                    <Table :col-def="tableHeader" :row-data="rowData" :button-function="useButton" @refresh="getOrderHistoryList"></Table>
+                    <Table :col-def="tableHeader" :row-data="rowData"></Table>
                     <EmptyTableView v-if="rowData.length === 0" />
                 </template>
             </ContentView>
@@ -34,11 +34,11 @@ import ContentView from '@/components/contents/ContentView.vue';
 import Table from '@/components/tables/TableView.vue';
 import EmptyTableView from '@/components/tables/EmptyTableView.vue';
 import type { ColDef, RowData} from '@/types/TableTypes';
-import type { StoreInfo } from '@/types/StoreTypes';
+import type { StoreInfo, ResponseStores } from '@/types/StoreTypes';
+import type { ResponseOrders } from '@/types/OrderTypes';
 
 import StoreApi from '@/apis/StoreApi';
 import OrderHistoryApi from '@/apis/OrderHistoryApi';
-import type { Axios, AxiosResponse } from 'axios';
 
 
 
@@ -53,19 +53,12 @@ const rowData: Ref<RowData<null>[]> = ref([]);
 
 
 
-const useButton = ()=>{
-    
-}
-
-
-
-
 const activeStoreId = ref<number | null>(null);
 const storeList: Ref<StoreInfo[]> = ref([]);
 const getStoreList = ()=>{
     StoreApi.getStoreList()
-    .then(res=>{
-        storeList.value = res.map((e: AxiosResponse)=>{
+    .then((res: ResponseStores[])=>{
+        storeList.value = res.map(e=>{
             return {
                 storeId: e.unique_store_info,
                 storeName: e.store_name
@@ -75,7 +68,6 @@ const getStoreList = ()=>{
             activeStoreId.value = storeList.value[0].storeId;
             getOrderHistoryList();
         }
-        console.log(typeof activeStoreId.value)
     })
     .catch(err=>{
         push.error({
@@ -93,8 +85,8 @@ const getOrderHistoryList = ()=>{
         store_uid: activeStoreId.value as number
     }
     OrderHistoryApi.getOrderList(params)
-    .then(res=>{
-        rowData.value = res.map((e: AxiosResponse)=>{
+    .then((res:ResponseOrders[])=>{
+        rowData.value = res.map(e=>{
             e.order_date = momentLib.format(e.order_date);
             return e;
         });

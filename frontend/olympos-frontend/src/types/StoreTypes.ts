@@ -23,3 +23,15 @@ export interface StoreInfo {
     storeId: number;
     storeName: String;
 }
+
+export interface ResponseStores {
+    disable_date: null | string,
+    last_modify_date: string,
+    store_address: string,
+    store_name: string,
+    store_owner: string,
+    store_tel_number: string,
+    table_count: number,
+    unique_admin: number,
+    unique_store_info: number
+}
