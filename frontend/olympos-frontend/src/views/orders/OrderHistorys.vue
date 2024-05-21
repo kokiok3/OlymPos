@@ -11,10 +11,12 @@
                 </template>
 
                 <template #controlArea>
-                    매장 선택
-                    <select v-model="activeStoreId" @change="getOrderHistoryList">
-                        <option v-for="item in storeList" :key="item.storeId" :value="item.storeId">{{ item.storeName }}</option>
-                    </select>
+                    <SelectWithTitle>
+                        <template #name>매장</template>
+                        <template #select>
+                            <SelectDefault v-model="activeStoreId" :option-list="storeList" @handleChange="getOrderHistoryList"/>
+                        </template>
+                    </SelectWithTitle>
                 </template>
 
                 <template #table>
@@ -34,8 +36,10 @@ import ContentView from '@/components/contents/ContentView.vue';
 import Table from '@/components/tables/TableView.vue';
 import EmptyTableView from '@/components/tables/EmptyTableView.vue';
 import type { ColDef, RowData} from '@/types/TableTypes';
-import type { StoreInfo, ResponseStores } from '@/types/StoreTypes';
+import type { ResponseStores } from '@/types/StoreTypes';
 import type { ResponseOrders } from '@/types/OrderTypes';
+import SelectWithTitle from '@/components/selects/SelectWithTitle.vue';
+import SelectDefault, { type SelectOptionList } from '@/components/selects/SelectDefault.vue';
 
 import StoreApi from '@/apis/StoreApi';
 import OrderHistoryApi from '@/apis/OrderHistoryApi';
@@ -54,18 +58,18 @@ const rowData: Ref<RowData<null>[]> = ref([]);
 
 
 const activeStoreId = ref<number | null>(null);
-const storeList: Ref<StoreInfo[]> = ref([]);
+const storeList: Ref<SelectOptionList[]> = ref([]);
 const getStoreList = ()=>{
     StoreApi.getStoreList()
     .then((res: ResponseStores[])=>{
         storeList.value = res.map(e=>{
             return {
-                storeId: e.unique_store_info,
-                storeName: e.store_name
+                id: e.unique_store_info,
+                name: e.store_name
             }
         });
         if(storeList.value.length > 0){
-            activeStoreId.value = storeList.value[0].storeId;
+            activeStoreId.value = storeList.value[0].id;
             getOrderHistoryList();
         }
     })
