@@ -9,7 +9,7 @@
 <style scoped>
 .button_rectangle {
     cursor: pointer;
-    padding: 9px 22px;
+    padding: 9px 14px;
     font-size: 13px;
     font-weight: bold;
     border-radius: 5px;
