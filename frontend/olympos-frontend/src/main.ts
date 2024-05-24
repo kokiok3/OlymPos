@@ -9,7 +9,7 @@ import 'notivue/animations.css'
 
 import App from './App.vue'
 import router from './router'
-import momentLib from '@/plugins/MomentPlugin'
+import momentPlungin from '@/plugins/MomentPlugin'
 
 const notivue = createNotivue({
     position: 'top-center',
@@ -26,6 +26,6 @@ const app = createApp(App)
 app.use(createPinia())
 app.use(router)
 app.use(notivue)
-app.use(momentLib)
+app.use(momentPlungin)
 
 app.mount('#app')

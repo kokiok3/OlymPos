@@ -82,9 +82,9 @@ const getStoreList = ()=>{
 }
 getStoreList();
 
-import { momentLibKey } from '@/symbols/InjectionKeys';
-const momentLib = inject(momentLibKey);
-if(momentLib === undefined){
+import { momentPlunginKey } from '@/symbols/InjectionKeys';
+const momentPlungin = inject(momentPlunginKey);
+if(momentPlungin === undefined){
     throw new Error("Failed to inject");
 }
 const getOrderHistoryList = ()=>{
@@ -94,7 +94,7 @@ const getOrderHistoryList = ()=>{
     OrderHistoryApi.getOrderList(params)
     .then((res:ResponseOrders[])=>{
         rowData.value = res.map(e=>{
-            e.order_date = momentLib.format(e.order_date);
+            e.order_date = momentPlungin.format(e.order_date);
             return e;
         });
     })

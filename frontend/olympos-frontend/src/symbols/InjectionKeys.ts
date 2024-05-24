@@ -1,7 +1,7 @@
 import { type InjectionKey } from "vue";
 
 type DateFormat = (date: string) => string;
-interface MomentLib {
+interface MomentPlugin {
     format: DateFormat;
 }
-export const momentLibKey: InjectionKey<MomentLib> = Symbol("momentLib");
+export const momentPlunginKey: InjectionKey<MomentPlugin> = Symbol("momentPlungin");

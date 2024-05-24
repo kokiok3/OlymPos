@@ -1,10 +1,10 @@
 import moment from 'moment'
 import type { App } from 'vue';
-import { momentLibKey } from '@/symbols/InjectionKeys';
+import { momentPlunginKey } from '@/symbols/InjectionKeys';
 
 export default {
     install(app: App){
-        const momentLib = {
+        const momentPlungin = {
             /**
             * @params {date} date to be converted to timeFormatter
             * @returns returns timeFormatter
@@ -14,9 +14,9 @@ export default {
             }
         }
         // template에서 사용할 수 있게 만드는 구문
-        app.config.globalProperties.$momentLib = momentLib;
+        app.config.globalProperties.$momentPlungin = momentPlungin;
 
         // script에서 사용할 수 있게 만드는 구문
-        app.provide(momentLibKey, momentLib)
+        app.provide(momentPlunginKey, momentPlungin)
     }
 }
