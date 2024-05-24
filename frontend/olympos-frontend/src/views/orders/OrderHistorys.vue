@@ -82,8 +82,11 @@ const getStoreList = ()=>{
 }
 getStoreList();
 
-
-const momentLib = inject('momentLib');
+import { momentLibKey } from '@/symbols/InjectionKeys';
+const momentLib = inject(momentLibKey);
+if(momentLib === undefined){
+    throw new Error("Failed to inject");
+}
 const getOrderHistoryList = ()=>{
     const params = {
         store_uid: activeStoreId.value as number

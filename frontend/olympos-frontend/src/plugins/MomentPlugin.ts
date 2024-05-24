@@ -1,5 +1,6 @@
 import moment from 'moment'
 import type { App } from 'vue';
+import { momentLibKey } from '@/symbols/InjectionKeys';
 
 export default {
     install(app: App){
@@ -8,12 +9,14 @@ export default {
             * @params {date} date to be converted to timeFormatter
             * @returns returns timeFormatter
             */
-            format: (date: Date):string=>{
+            format: (date: string):string=>{
                 return moment(date).format("YYYY-MM-DD HH:mm:ss");
             }
         }
-        
+        // template에서 사용할 수 있게 만드는 구문
         app.config.globalProperties.$momentLib = momentLib;
-        app.provide('momentLib', momentLib)
+
+        // script에서 사용할 수 있게 만드는 구문
+        app.provide(momentLibKey, momentLib)
     }
 }
