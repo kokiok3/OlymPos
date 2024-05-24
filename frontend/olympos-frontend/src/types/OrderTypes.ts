@@ -1,4 +1,6 @@
-export interface ResponseOrders {
+import type { RowData } from "./TableTypes";
+
+export interface ResponseOrders extends RowData<null> {
     amount: number,
     last_modify_date: string,
     order_date: string,
