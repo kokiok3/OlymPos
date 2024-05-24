@@ -37,7 +37,7 @@ const menuName = ref([
     },
     {
         korName: '주문 내역',
-        path: 'order-history',
+        path: '/order-history',
     },
     {
         korName: '매출 관리',
