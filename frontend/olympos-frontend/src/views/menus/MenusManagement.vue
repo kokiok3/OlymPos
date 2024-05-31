@@ -16,7 +16,7 @@
                     <SelectWithTitle>
                         <template #name>매장</template>
                         <template #select>
-                            <SelectDefault v-model="activeStoreId" :option-list="storeList" @handleChange="getMenuList"/>
+                            <SelectDefault v-model="activeStoreId" :option-list="storeList" @handleChange="getProductList"/>
                         </template>
                     </SelectWithTitle>
 
@@ -27,7 +27,7 @@
 
                 <template #tab>
                     <div>
-                        <TabDefault></TabDefault>
+                        <TabDefault :tabList="tabList"></TabDefault>
                     </div>
                 </template>
 
@@ -64,6 +64,7 @@ import MenuApi from '@/apis/MenuApi';
 import { type ResponseMenus } from '@/types/MenuTypes';
 
 
+
 const tableHeader: ColDef[] = [
     { header: '번호', value: 'number', ratio: 1 },
     { header: '메뉴명', value: 'product_name', ratio: 5 },
@@ -92,7 +93,8 @@ const getStoreList = ()=>{
         });
         if(storeList.value.length > 0){
             activeStoreId.value = storeList.value[0].id;
-            getMenuList();
+            getTabList();
+            getProductList();
         }
     })
     .catch(err=>{
@@ -106,11 +108,30 @@ getStoreList();
 
 
 
-const getMenuList = ()=>{
+const tabList = ref([]);
+const getTabList = ()=>{
     const params = {
         store_uid: activeStoreId.value
     }
-    MenuApi.getMenuList(params)
+    MenuApi.getTabList(params)
+    .then((res)=>{
+        tabList.value = res;
+    })
+    .catch(err=>{
+        push.error({
+            title: '에러',
+            message: err.message || 'server error',
+        });
+    });
+}
+
+
+
+const getProductList = ()=>{
+    const params = {
+        store_uid: activeStoreId.value
+    }
+    MenuApi.getProductList(params)
     .then((res)=>{
         if(res.length === 0){
             rowData.value = res;
