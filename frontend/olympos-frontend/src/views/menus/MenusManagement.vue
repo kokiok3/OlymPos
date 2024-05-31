@@ -27,7 +27,7 @@
 
                 <template #tab>
                     <div>
-                        todo 탭 메뉴 생성
+                        <TabDefault></TabDefault>
                     </div>
                 </template>
 
@@ -55,6 +55,7 @@ import ButtonRectangle from '@/components/buttons/ButtonRectangle.vue';
 import Table from '@/components/tables/TableView.vue';
 import EmptyTableView from '@/components/tables/EmptyTableView.vue';
 import ButtonInTable from '@/components/buttons/ButtonInTable.vue';
+import TabDefault from '@/components/tab/TabDefault.vue';
 import type { ColDef, RowData} from '@/types/TableTypes';
 import type { ResponseStores } from '@/types/StoreTypes';
 

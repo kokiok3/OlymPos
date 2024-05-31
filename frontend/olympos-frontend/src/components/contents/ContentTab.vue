@@ -1,5 +1,5 @@
 <template>
-    <h2 class="tab"><slot></slot></h2>
+    <div class="tab"><slot></slot></div>
 </template>
 
 <script setup lang="ts">
@@ -7,7 +7,4 @@
 </script>
 
 <style scoped>
-.title {
-    font-weight: 600;
-}
 </style>
