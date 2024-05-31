@@ -1,10 +1,10 @@
 <template>
-    <div class="store_content">
+    <div class="order_history_content">
         <Notivue v-slot="item">
             <Notification :item="item" />
         </Notivue>
         
-        <div class="store_wrapper">
+        <div class="order_history_wrapper">
             <ContentView>
                 <template #title>
                     주문 내역
@@ -81,6 +81,8 @@ const getStoreList = ()=>{
     });
 }
 getStoreList();
+
+
 
 import { momentPlunginKey } from '@/symbols/InjectionKeys';
 const momentPlungin = inject(momentPlunginKey);

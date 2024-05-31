@@ -3,6 +3,10 @@
 @import './fontawesome/css/fontawesome.css';
 @import './fontawesome/css/solid.css';
 
+html {
+    box-sizing: border-box;
+}
+
 label {
     cursor: pointer;
 }
