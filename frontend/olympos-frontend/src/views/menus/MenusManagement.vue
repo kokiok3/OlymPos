@@ -27,7 +27,7 @@
 
                 <template #tab>
                     <div>
-                        <TabDefault :tabList="tabList"></TabDefault>
+                        <TabDefault :tabList="tabList" @getMenu="getProductList"></TabDefault>
                     </div>
                 </template>
 

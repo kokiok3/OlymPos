@@ -1,17 +1,25 @@
 <template>
     <div class="tab-container">
-        <div v-for="(item, index) in tabList" :key="index" class="tab-item" :class="`tab-item${index}`" @click="handleTab">
+        <div v-for="(item, index) in props.tabList" :key="index" class="tab-item" :class="`tab-item${index}`" @click="handleTab">
             {{ item.group_name }}
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { nextTick, watch } from 'vue';
 
 
 
-defineProps(['tabList']);
+const emit = defineEmits(['getMenu']);
+const props = defineProps(['tabList']);
+watch(props, (after)=>{
+    if(after.tabList.length > 0){
+        nextTick(()=>{
+            setStyleTab(null);
+        });
+    }
+});
 
 
 const setStyleTab = (event: Event | null)=>{
@@ -26,15 +34,13 @@ const setStyleTab = (event: Event | null)=>{
         document.querySelector('.tab-item0')?.classList.add('activeTabItem');
     }
 }
-onMounted(()=>{
-    setStyleTab(null);
-});
 
 
-const handleTab = (event: Event)=>{
+const handleTab = (event: Event | null)=>{
     setStyleTab(event);
-
-    // 카테고리 별 상품 목록 조회
+    
+    // todo 카테고리 별 상품 목록 조회 : api 파라미터 수정되면 작동시킬 것
+    // emit('getMenu');
 }
 </script>
 
