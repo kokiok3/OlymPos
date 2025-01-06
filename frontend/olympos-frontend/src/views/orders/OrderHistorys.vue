@@ -35,7 +35,7 @@ import ContentView from '@/components/contents/ContentView.vue';
 import Table from '@/components/tables/TableView.vue';
 import type { ColDef, RowData} from '@/types/TableTypes';
 import type { ResponseStores } from '@/types/StoreTypes';
-import type { ResponseOrders } from '@/types/OrderTypes';
+import type { Order } from '@/types/OrderTypes';
 import SelectWithTitle from '@/components/selects/SelectWithTitle.vue';
 import SelectDefault, { type SelectOptionList } from '@/components/selects/SelectDefault.vue';
 
@@ -92,8 +92,8 @@ const getOrderHistoryList = ()=>{
         store_uid: activeStoreId.value as number
     }
     OrderHistoryApi.getOrderList(params)
-    .then((res:ResponseOrders[])=>{
-        rowData.value = res.map(e=>{
+    .then((res)=>{
+        rowData.value = res.map((e: Order)=>{
             e.order_date = momentPlungin.format(e.order_date);
             return e;
         });
