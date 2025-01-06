@@ -34,7 +34,7 @@ import { Notivue, Notification, push } from 'notivue';
 import ContentView from '@/components/contents/ContentView.vue';
 import Table from '@/components/tables/TableView.vue';
 import type { ColDef, RowData} from '@/types/TableTypes';
-import type { ResponseStores } from '@/types/StoreTypes';
+import type { GetStoreListResponse } from '@/types/StoreTypes';
 import type { Order } from '@/types/OrderTypes';
 import SelectWithTitle from '@/components/selects/SelectWithTitle.vue';
 import SelectDefault, { type SelectOptionList } from '@/components/selects/SelectDefault.vue';
@@ -59,7 +59,7 @@ const activeStoreId = ref<number | null>(null);
 const storeList: Ref<SelectOptionList[]> = ref([]);
 const getStoreList = ()=>{
     StoreApi.getStoreList()
-    .then((res: ResponseStores[])=>{
+    .then((res: GetStoreListResponse[])=>{
         storeList.value = res.map(e=>{
             return {
                 id: e.unique_store_info,

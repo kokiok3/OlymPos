@@ -54,7 +54,7 @@ import Table from '@/components/tables/TableView.vue';
 import ButtonInTable from '@/components/buttons/ButtonInTable.vue';
 import TabDefault from '@/components/tab/TabDefault.vue';
 import type { ColDef, RowData} from '@/types/TableTypes';
-import type { ResponseStores } from '@/types/StoreTypes';
+import type { GetStoreListResponse } from '@/types/StoreTypes';
 
 import StoreApi from '@/apis/StoreApi';
 import MenuApi from '@/apis/MenuApi';
@@ -84,7 +84,7 @@ const activeStoreId = ref<number>();
 const storeList = ref<SelectOptionList[]>([]);
 const getStoreList = ()=>{
     StoreApi.getStoreList()
-    .then((res: ResponseStores[])=>{
+    .then((res: GetStoreListResponse[])=>{
         storeList.value = res.map(e=>{
             return {
                 id: e.unique_store_info,
