@@ -21,7 +21,6 @@
 
                 <template #table>
                     <Table :col-def="tableHeader" :row-data="rowData"></Table>
-                    <EmptyTableView v-if="rowData.length === 0" />
                 </template>
             </ContentView>
         </div>
@@ -34,7 +33,6 @@ import { ref, type Ref, inject } from 'vue';
 import { Notivue, Notification, push } from 'notivue';
 import ContentView from '@/components/contents/ContentView.vue';
 import Table from '@/components/tables/TableView.vue';
-import EmptyTableView from '@/components/tables/EmptyTableView.vue';
 import type { ColDef, RowData} from '@/types/TableTypes';
 import type { ResponseStores } from '@/types/StoreTypes';
 import type { ResponseOrders } from '@/types/OrderTypes';
