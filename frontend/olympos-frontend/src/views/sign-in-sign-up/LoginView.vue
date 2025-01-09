@@ -66,34 +66,55 @@ let validateObj = ref(newValidateObj({
 const validate = () => {
     return schema.validate({ isErrorLoginId: loginValue.value.userId, isErrorLoginPw: loginValue.value.userPw }, { abortEarly: false });
 }
+const isLoginLoading = ref(false);
 
-const login = () => {
+const login = async () => {
+    if (isLoginLoading.value) return;
+
+    isLoginLoading.value = true;
+
     initValidateObj(validateObj.value);
 
     const validateResult = validate();
     if (validateResult.error) {
-        validateResult.error.details.forEach(element => {
-            if (element?.context?.key) {
-                validateObj.value[element.context.key] = true;
-            }
+        handlerValidateError(validateResult.error.details);
+
+        isLoginLoading.value = false;
+        return;
+    }
+
+    try {
+        const res = await LoginApi.login(loginValue.value);
+        if (res?.accessToken) {
+            handleSuccessfulLogin(res.accessToken)
+        }
+
+    } catch (err: any) {
+        push.error({
+            title: '에러',
+            message: err.message || 'server error',
         });
     }
-    else {
-        LoginApi.login(loginValue.value)
-            .then(res => {
-                if (res?.accessToken) {
-                    if (memorizeId.value) {
-                        changeCookieSetting()
-                        setCookieForMemorizeId();
-                    }
-
-                    const token = res.accessToken;
-                    sessionStorage.setItem('access_token', token);
-
-                    router.push({ path: '/store' });
-                }
-            })
+    finally {
+        isLoginLoading.value = false;
     }
+}
+const handlerValidateError = (errorDetails: any[]) => {
+    errorDetails.forEach(element => {
+        if (element?.context?.key) {
+            validateObj.value[element.context.key] = true;
+        }
+    });
+}
+const handleSuccessfulLogin = (accessToken: string) => {
+    if (memorizeId.value) {
+        changeCookieSetting()
+        setCookieForMemorizeId();
+    }
+
+    sessionStorage.setItem('access_token', accessToken);
+
+    router.push({ path: '/store' });
 }
 
 onUnmounted(() => {

@@ -52,14 +52,23 @@ const menuName = ref([
     }
 ]);
 
-const logout = () => {
-    LoginApi.logout()
-        .catch(err => {
-            push.error({
-                title: '에러',
-                message: err.message || 'server error',
-            });
-        })
+const isLogoutLoading = ref(false);
+const logout = async () => {
+    if (!isLogoutLoading.value) return;
+
+    isLogoutLoading.value = true;
+
+    try {
+        await LoginApi.logout()
+    } catch (err: any) {
+        push.error({
+            title: '에러',
+            message: err.message || 'server error',
+        });
+    }
+    finally {
+        isLogoutLoading.value = false;
+    }
 }
 </script>
 
