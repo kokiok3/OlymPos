@@ -80,11 +80,11 @@ const router = createRouter({
             ],
             beforeEnter: (to, from, next)=>{
                 const accessToken = sessionStorage.getItem('access_token');
-                if(!!! accessToken){
-                    next('/login');
+                if (accessToken && !!accessToken) {
+                    next();
                 }
                 else {
-                    next();
+                    next('/login');
                 }
             }
         },
