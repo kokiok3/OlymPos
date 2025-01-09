@@ -1,14 +1,18 @@
 <template>
     <nav>
+        <Notivue v-slot="item">
+            <Notification :item="item" />
+        </Notivue>
+
         <div class="top">
-            <LogoText class="logo_text"/>
+            <LogoText class="logo_text" />
             <div class="user_profile">k</div>
         </div>
         <div class="middle">
             <RouterLink v-for="(item, index) in menuName" :key="index" :to="item.path">{{ item.korName }}</RouterLink>
         </div>
         <div class="bottom">
-            <button>
+            <button @click="logout">
                 <i class="fa-solid fa-right-from-bracket mr10"></i>
                 <span>로그아웃</span>
             </button>
@@ -20,7 +24,10 @@
 import { RouterLink } from 'vue-router'
 import LogoText from '@/components/logo/LogoText.vue';
 
+import { Notivue, Notification, push } from 'notivue';
+
 import { ref } from 'vue';
+import LoginApi from '@/apis/LoginApi';
 
 const menuName = ref([
     {
@@ -44,6 +51,16 @@ const menuName = ref([
         path: '/sale',
     }
 ]);
+
+const logout = () => {
+    LoginApi.logout()
+        .catch(err => {
+            push.error({
+                title: '에러',
+                message: err.message || 'server error',
+            });
+        })
+}
 </script>
 
 <style scoped>
@@ -57,15 +74,18 @@ nav {
     font-weight: 400;
     background-color: var(--main-mute-1);
 }
+
 .top {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 9px;
 }
+
 .top .logo_text {
     font-size: 15px;
 }
+
 .top .user_profile {
     display: flex;
     justify-content: center;
@@ -79,12 +99,14 @@ nav {
     color: var(--main-white);
     border: 1px solid var(--main-white);
 }
+
 .middle {
     height: 80%;
     display: flex;
     flex-direction: column;
     gap: 9px;
 }
+
 .middle a {
     padding: 7px 10px;
     text-decoration: none;
@@ -92,12 +114,14 @@ nav {
     border-radius: 5px;
     text-align: left;
 }
+
 .middle a:hover {
     background-color: var(--main);
     color: var(--main-white);
 }
-.bottom {
-}
+
+.bottom {}
+
 .bottom button {
     background-color: transparent;
     border: none;

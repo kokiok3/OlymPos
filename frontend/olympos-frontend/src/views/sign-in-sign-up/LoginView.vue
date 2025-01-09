@@ -79,13 +79,13 @@ const login = ()=>{
         });
     }
     else{
-        LoginApi.doLogin(loginValue.value)
         .then(res=>{
             if(res?.accessToken){
                 if(memorizeId.value){
                     changeCookieSetting()
                     setCookieForMemorizeId();
                 }
+        LoginApi.login(loginValue.value)
 
                 const token = res.accessToken;
                 sessionStorage.setItem('access_token', token);
